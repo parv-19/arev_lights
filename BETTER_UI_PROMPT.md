@@ -1,0 +1,1 @@
+Use a premium visual language inspired by top architecture, interior, lighting, and luxury product websites. Focus on generous whitespace, modern typography, elegant transitions, refined shadows, large image-led sections, premium cards, smooth carousels, and polished interactions. The final result should feel expensive and business-class.

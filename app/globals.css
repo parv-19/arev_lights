@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===========================
+   AREV Lights – Global Styles
+   =========================== */
+
+@layer base {
+  :root {
+    --scrollbar-track: #0a0a0a;
+    --scrollbar-thumb: #2e2e2e;
+    --scrollbar-thumb-hover: #C9A84C;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: #0A0A0A;
+    color: #F5F0EB;
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(201, 168, 76, 0.25);
+    color: #F5F0EB;
+  }
+
+  /* Focus ring */
+  :focus-visible {
+    outline: 2px solid #C9A84C;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+@layer components {
+  /* ─── Gold accent line ─── */
+  .gold-line {
+    @apply w-12 h-px bg-accent;
+  }
+
+  .gold-line-lg {
+    @apply w-20 h-px bg-accent;
+  }
+
+  /* ─── Section label (upper text above headings) ─── */
+  .section-label {
+    @apply font-label text-accent text-xs uppercase tracking-[0.25em] font-semibold;
+  }
+
+  /* ─── Display headings ─── */
+  .heading-display {
+    @apply font-display text-display-md leading-tight text-neutral;
+  }
+
+  .heading-xl {
+    @apply font-display text-display-xl leading-tight text-neutral;
+  }
+
+  /* ─── Gradient text ─── */
+  .gradient-text {
+    background: linear-gradient(135deg, #C9A84C 0%, #E8C96A 50%, #9A7A35 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ─── Premium button styles ─── */
+  .btn-gold {
+    @apply inline-flex items-center gap-2 px-7 py-3.5 bg-accent text-primary font-label font-semibold text-sm uppercase tracking-widest transition-all duration-300 hover:bg-accent-light hover:shadow-gold-lg hover:scale-[1.02] active:scale-100;
+  }
+
+  .btn-outline-gold {
+    @apply inline-flex items-center gap-2 px-7 py-3.5 border border-accent text-accent font-label font-semibold text-sm uppercase tracking-widest transition-all duration-300 hover:bg-accent hover:text-primary hover:shadow-gold;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 text-neutral/70 font-label text-sm uppercase tracking-wider transition-all duration-200 hover:text-accent;
+  }
+
+  /* ─── Card surfaces ─── */
+  .card-surface {
+    @apply bg-surface border border-border rounded-sm overflow-hidden;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover hover:border-border-light;
+  }
+
+  /* ─── Section padding ─── */
+  .section-padding {
+    @apply py-20 px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding-lg {
+    @apply py-32 px-4 sm:px-6 lg:px-8;
+  }
+
+  /* ─── Container ─── */
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* ─── Image overlay ─── */
+  .img-overlay {
+    @apply absolute inset-0 bg-card-gradient;
+  }
+
+  /* ─── Divider ─── */
+  .divider {
+    @apply border-t border-border;
+  }
+
+  /* ─── Shimmer loading skeleton ─── */
+  .skeleton {
+    @apply bg-surface-2 rounded overflow-hidden relative;
+  }
+
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* ─── Admin specific ─── */
+  .admin-card {
+    @apply bg-surface border border-border rounded-lg p-6;
+  }
+
+  .admin-input {
+    @apply w-full bg-surface-2 border border-border text-neutral placeholder-muted rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors duration-200;
+  }
+
+  .admin-label {
+    @apply block text-muted text-xs font-label uppercase tracking-wider mb-1.5;
+  }
+
+  /* ─── Status badges ─── */
+  .badge-new {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-info/15 text-info;
+  }
+
+  .badge-contacted {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-warning/15 text-warning;
+  }
+
+  .badge-converted {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-success/15 text-success;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

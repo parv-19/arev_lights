@@ -1,0 +1,28 @@
+import mongoose, { Document, Schema } from "mongoose";
+
+export interface IBrand extends Document {
+  name: string;
+  logo: { url: string; publicId: string };
+  websiteUrl?: string;
+  sortOrder: number;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const BrandSchema = new Schema<IBrand>(
+  {
+    name: { type: String, required: true, trim: true },
+    logo: {
+      url: { type: String, default: "" },
+      publicId: { type: String, default: "" },
+    },
+    websiteUrl: { type: String, default: "" },
+    sortOrder: { type: Number, default: 0 },
+    isActive: { type: Boolean, default: true },
+  },
+  { timestamps: true }
+);
+
+export default mongoose.models.Brand ||
+  mongoose.model<IBrand>("Brand", BrandSchema);

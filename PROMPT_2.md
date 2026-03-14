@@ -1,0 +1,1 @@
+Now generate the premium frontend for AREV Lights with modern interactions, hero carousel, product sliders, brochure section, projects showcase, testimonials, WhatsApp CTA, and responsive luxury-style UI.

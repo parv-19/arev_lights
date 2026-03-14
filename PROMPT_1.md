@@ -1,0 +1,1 @@
+First, design the complete architecture for AREV Lights full-stack website and admin CMS using Next.js, TypeScript, Tailwind, MongoDB, and Cloudinary. Show folder structure, modules, collections, admin permissions, reusable components, and route plan before generating code.
