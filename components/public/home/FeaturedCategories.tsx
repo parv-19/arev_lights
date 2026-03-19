@@ -3,6 +3,8 @@ import Link from "next/link";
 import SectionReveal from "@/components/shared/SectionReveal";
 import { ArrowRight } from "lucide-react";
 
+import { ICategory } from "@/types";
+
 const DEFAULT_CATEGORIES = [
   { name: "Indoor Lighting", slug: "indoor-lighting", image: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=600&q=80", count: "120+ Products" },
   { name: "Outdoor Lighting", slug: "outdoor-lighting", image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80", count: "80+ Products" },
@@ -10,7 +12,8 @@ const DEFAULT_CATEGORIES = [
   { name: "Decorative", slug: "decorative", image: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=600&q=80", count: "90+ Products" },
 ];
 
-export default function FeaturedCategories() {
+export default function FeaturedCategories({ categories: propCategories }: { categories?: ICategory[] }) {
+  const cats = propCategories?.length ? propCategories : DEFAULT_CATEGORIES;
   return (
     <section className="section-padding bg-primary">
       <div className="container-custom">
@@ -29,14 +32,14 @@ export default function FeaturedCategories() {
 
         {/* Category Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {DEFAULT_CATEGORIES.map((cat, i) => (
+          {cats.map((cat, i) => (
             <SectionReveal key={cat.slug} delay={i * 0.1}>
               <Link
                 href={`/products?category=${cat.slug}`}
                 className="group relative block overflow-hidden rounded-sm aspect-[3/4]"
               >
                 <Image
-                  src={cat.image}
+                  src={(cat as any).image?.url || (cat as any).image || "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=600&q=80"}
                   alt={cat.name}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -48,7 +51,7 @@ export default function FeaturedCategories() {
 
                 {/* Content */}
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <p className="font-label text-[10px] uppercase tracking-widest text-accent mb-1">{cat.count}</p>
+                  <p className="font-label text-[10px] uppercase tracking-widest text-accent mb-1">{(cat as any).count || ''}</p>
                   <h3 className="font-display text-xl text-neutral leading-tight group-hover:text-accent transition-colors duration-200">
                     {cat.name}
                   </h3>

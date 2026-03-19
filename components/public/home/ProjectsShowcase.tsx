@@ -10,7 +10,10 @@ const DUMMY_PROJECTS = [
   { _id: "4", title: "Retail Flagship Store", location: "Delhi", image: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=700&q=80" },
 ];
 
-export default function ProjectsShowcase() {
+import { IProject } from "@/types";
+
+export default function ProjectsShowcase({ projects: propProjects }: { projects?: IProject[] }) {
+  const projects = propProjects?.length ? propProjects : DUMMY_PROJECTS as unknown as IProject[];
   return (
     <section className="section-padding bg-primary">
       <div className="container-custom">
@@ -37,8 +40,8 @@ export default function ProjectsShowcase() {
               className="group relative flex overflow-hidden rounded-sm h-full min-h-[400px]"
             >
               <Image
-                src={DUMMY_PROJECTS[0].image}
-                alt={DUMMY_PROJECTS[0].title}
+                src={(projects[0] as any).image || projects[0].images?.[0]?.url || "https://images.unsplash.com/photo-1564078516393-cf04bd966897?w=700&q=80"}
+                alt={projects[0].title}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                 sizes="(max-width: 768px) 100vw, 33vw"
@@ -47,21 +50,21 @@ export default function ProjectsShowcase() {
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <div className="flex items-center gap-1.5 mb-2">
                   <MapPin size={12} className="text-accent" />
-                  <span className="text-accent font-label text-[10px] uppercase tracking-wider">{DUMMY_PROJECTS[0].location}</span>
+                  <span className="text-accent font-label text-[10px] uppercase tracking-wider">{projects[0].location}</span>
                 </div>
                 <h3 className="font-display text-xl text-neutral group-hover:text-accent transition-colors duration-200">
-                  {DUMMY_PROJECTS[0].title}
+                  {projects[0].title}
                 </h3>
               </div>
             </Link>
           </SectionReveal>
 
           {/* Smaller cards */}
-          {DUMMY_PROJECTS.slice(1).map((p, i) => (
+          {projects.slice(1).map((p, i) => (
             <SectionReveal key={p._id} delay={(i + 1) * 0.1}>
               <Link href="/projects" className="group relative flex overflow-hidden rounded-sm aspect-video">
                 <Image
-                  src={p.image}
+                  src={(p as any).image || p.images?.[0]?.url || "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80"}
                   alt={p.title}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-110"

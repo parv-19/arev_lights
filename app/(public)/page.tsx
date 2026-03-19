@@ -8,6 +8,13 @@ import BrochuresSection from "@/components/public/home/BrochuresSection";
 import TestimonialsSlider from "@/components/public/home/TestimonialsSlider";
 import InquiryCTASection from "@/components/public/home/InquiryCTASection";
 import type { Metadata } from "next";
+import dbConnect from "@/lib/db";
+import Category from "@/models/Category";
+import Product from "@/models/Product";
+import Brand from "@/models/Brand";
+import Project from "@/models/Project";
+import Testimonial from "@/models/Testimonial";
+import Brochure from "@/models/Brochure";
 
 export const metadata: Metadata = {
   title: "AREV Lights – Premium Lighting Solutions",
@@ -37,16 +44,28 @@ export default async function HomePage() {
   const heroBannersData = getSectionData("hero_banners");
   const heroBanners = heroBannersData?.banners;
 
+  await dbConnect();
+  const cleanData = (d: any) => JSON.parse(JSON.stringify(d));
+
+  const [categories, products, brands, projects, testimonials, brochures] = await Promise.all([
+    Category.find({ isActive: true }).sort({ sortOrder: 1 }).limit(8).lean(),
+    Product.find({ isActive: true, isFeatured: true }).populate("category").limit(8).lean(),
+    Brand.find({ isActive: true }).sort({ sortOrder: 1 }).lean(),
+    Project.find({ isActive: true, isFeatured: true }).limit(6).lean(),
+    Testimonial.find({ isVisible: true }).sort({ sortOrder: 1 }).lean(),
+    Brochure.find({ isVisible: true }).populate("category").sort({ sortOrder: 1 }).limit(6).lean(),
+  ]);
+
   return (
     <>
       {isSectionActive("hero_banners") && <HeroCarousel banners={heroBanners} />}
-      {isSectionActive("featured_categories") && <FeaturedCategories />}
+      {isSectionActive("featured_categories") && <FeaturedCategories categories={cleanData(categories)} />}
       {isSectionActive("why_arev") && <WhyArev />}
-      {isSectionActive("featured_products") && <FeaturedProducts />}
-      {isSectionActive("partner_logos") && <BrandLogosSlider />}
-      {isSectionActive("projects_showcase") && <ProjectsShowcase />}
-      {isSectionActive("brochures") && <BrochuresSection />}
-      {isSectionActive("testimonials") && <TestimonialsSlider />}
+      {isSectionActive("featured_products") && <FeaturedProducts products={cleanData(products)} />}
+      {isSectionActive("partner_logos") && <BrandLogosSlider brands={cleanData(brands)} />}
+      {isSectionActive("projects_showcase") && <ProjectsShowcase projects={cleanData(projects)} />}
+      {isSectionActive("brochures") && <BrochuresSection brochures={cleanData(brochures)} />}
+      {isSectionActive("testimonials") && <TestimonialsSlider testimonials={cleanData(testimonials)} />}
       {isSectionActive("inquiry_cta") && <InquiryCTASection />}
     </>
   );

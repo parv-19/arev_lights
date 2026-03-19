@@ -9,7 +9,10 @@ const DUMMY_BROCHURES = [
   { _id: "3", title: "Architectural Lighting Guide", categoryName: "Architectural", previewUrl: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=400&q=80", pdfUrl: "#" },
 ];
 
-export default function BrochuresSection() {
+import { IBrochure } from "@/types";
+
+export default function BrochuresSection({ brochures: propBrochures }: { brochures?: IBrochure[] }) {
+  const brochures = propBrochures?.length ? propBrochures : DUMMY_BROCHURES as unknown as IBrochure[];
   return (
     <section className="section-padding bg-surface border-y border-border">
       <div className="container-custom">
@@ -28,13 +31,13 @@ export default function BrochuresSection() {
 
         {/* Brochure Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {DUMMY_BROCHURES.map((b, i) => (
+          {brochures.map((b, i) => (
             <SectionReveal key={b._id} delay={i * 0.1}>
               <div className="group card-surface card-hover overflow-hidden">
                 {/* Preview Thumbnail */}
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
-                    src={b.previewUrl}
+                    src={(b as any).previewUrl || b.previewImage?.url || "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=400&q=80"}
                     alt={b.title}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -49,9 +52,8 @@ export default function BrochuresSection() {
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="p-5">
-                  <span className="section-label text-[10px] block mb-2">{b.categoryName}</span>
+                  <span className="section-label text-[10px] block mb-2">{(b as any).categoryName || (b.category as any)?.name || 'General'}</span>
                   <h3 className="font-display text-lg text-neutral mb-4 leading-snug">{b.title}</h3>
 
                   {/* Actions */}

@@ -21,7 +21,9 @@ const footerLinks = {
   ],
 };
 
-export default function Footer() {
+import { ISiteSettings } from "@/types";
+
+export default function Footer({ settings }: { settings?: ISiteSettings | null }) {
   const year = new Date().getFullYear();
 
   return (
@@ -66,10 +68,10 @@ export default function Footer() {
             {/* Social Links */}
             <div className="flex items-center gap-3">
               {[
-                { Icon: Instagram, href: "#", label: "Instagram" },
-                { Icon: Facebook, href: "#", label: "Facebook" },
-                { Icon: Linkedin, href: "#", label: "LinkedIn" },
-                { Icon: Youtube, href: "#", label: "YouTube" },
+                { Icon: Instagram, href: settings?.socialLinks?.instagram || "#", label: "Instagram" },
+                { Icon: Facebook, href: settings?.socialLinks?.facebook || "#", label: "Facebook" },
+                { Icon: Linkedin, href: settings?.socialLinks?.linkedin || "#", label: "LinkedIn" },
+                { Icon: Youtube, href: settings?.socialLinks?.youtube || "#", label: "YouTube" },
               ].map(({ Icon, href, label }) => (
                 <a
                   key={label}
@@ -110,18 +112,18 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-border grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div className="flex items-start gap-3">
             <MapPin size={16} className="text-accent mt-0.5 flex-shrink-0" />
-            <p className="text-muted text-sm">AREV Lights, India</p>
+            <p className="text-muted text-sm whitespace-pre-line">{settings?.address || "AREV Lights, India"}</p>
           </div>
           <div className="flex items-center gap-3">
             <Phone size={16} className="text-accent flex-shrink-0" />
-            <a href="tel:+919274776616" className="text-muted text-sm hover:text-accent transition-colors">
-              +91 92747 76616
+            <a href={`tel:${settings?.phones?.[0] || "+919274776616"}`} className="text-muted text-sm hover:text-accent transition-colors">
+              {settings?.phones?.[0] || "+91 92747 76616"}
             </a>
           </div>
           <div className="flex items-center gap-3">
             <Mail size={16} className="text-accent flex-shrink-0" />
-            <a href="mailto:arev.lights@gmail.com" className="text-muted text-sm hover:text-accent transition-colors">
-              arev.lights@gmail.com
+            <a href={`mailto:${settings?.emails?.[0] || "arev.lights@gmail.com"}`} className="text-muted text-sm hover:text-accent transition-colors">
+              {settings?.emails?.[0] || "arev.lights@gmail.com"}
             </a>
           </div>
         </div>

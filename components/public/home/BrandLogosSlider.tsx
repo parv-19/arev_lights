@@ -11,10 +11,14 @@ const BRANDS = [
   { name: "Anchor", logo: "https://images.unsplash.com/photo-1614680376739-414d95ff43df?w=200&q=80" },
 ];
 
-// Duplicate for seamless loop
-const BRANDS_DOUBLED = [...BRANDS, ...BRANDS];
+import { IBrand } from "@/types";
 
-export default function BrandLogosSlider() {
+// Duplicate for seamless loop
+const getDoubled = (items: any[]) => [...items, ...items];
+
+export default function BrandLogosSlider({ brands: propBrands }: { brands?: IBrand[] }) {
+  const brandsSrc = propBrands?.length ? propBrands : BRANDS as unknown as IBrand[];
+  const BRANDS_DOUBLED = getDoubled(brandsSrc);
   return (
     <section className="py-14 bg-surface border-y border-border overflow-hidden">
       <div className="container-custom mb-8">
@@ -34,11 +38,15 @@ export default function BrandLogosSlider() {
           {BRANDS_DOUBLED.map((brand, i) => (
             <div
               key={`${brand.name}-${i}`}
-              className="flex-none w-40 h-16 flex items-center justify-center border border-border/50 bg-primary/50 px-6 hover:border-accent/50 transition-colors duration-200 group"
+              className="flex-none w-40 h-16 flex items-center justify-center border border-border/50 bg-primary/50 relative hover:border-accent/50 transition-colors duration-200 group"
             >
-              <p className="font-label text-sm uppercase tracking-widest text-muted group-hover:text-accent transition-colors duration-200 whitespace-nowrap">
-                {brand.name}
-              </p>
+              {brand.logo?.url ? (
+                <Image src={brand.logo.url} alt={brand.name} fill className="object-contain p-4 filter grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" sizes="160px" />
+              ) : (
+                <p className="font-label text-sm uppercase tracking-widest text-muted group-hover:text-accent transition-colors duration-200 whitespace-nowrap">
+                  {brand.name}
+                </p>
+              )}
             </div>
           ))}
         </div>

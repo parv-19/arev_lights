@@ -32,9 +32,12 @@ const TESTIMONIALS = [
   },
 ];
 
-export default function TestimonialsSlider() {
+import { ITestimonial } from "@/types";
+
+export default function TestimonialsSlider({ testimonials: propTestimonials }: { testimonials?: ITestimonial[] }) {
+  const testimonials = propTestimonials?.length ? propTestimonials : TESTIMONIALS as unknown as ITestimonial[];
   const [current, setCurrent] = useState(0);
-  const t = TESTIMONIALS[current];
+  const t = testimonials[current];
 
   return (
     <section className="section-padding bg-primary relative overflow-hidden">
@@ -97,7 +100,7 @@ export default function TestimonialsSlider() {
           {/* Navigation */}
           <div className="flex items-center justify-center gap-6 mt-10">
             <button
-              onClick={() => setCurrent((c) => (c - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)}
+              onClick={() => setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length)}
               className="w-10 h-10 border border-border flex items-center justify-center text-muted hover:border-accent hover:text-accent transition-all duration-200"
               aria-label="Previous"
             >
@@ -106,7 +109,7 @@ export default function TestimonialsSlider() {
 
             {/* Dots */}
             <div className="flex gap-2">
-              {TESTIMONIALS.map((_, i) => (
+              {testimonials.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrent(i)}
@@ -116,7 +119,7 @@ export default function TestimonialsSlider() {
             </div>
 
             <button
-              onClick={() => setCurrent((c) => (c + 1) % TESTIMONIALS.length)}
+              onClick={() => setCurrent((c) => (c + 1) % testimonials.length)}
               className="w-10 h-10 border border-border flex items-center justify-center text-muted hover:border-accent hover:text-accent transition-all duration-200"
               aria-label="Next"
             >

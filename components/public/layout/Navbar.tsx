@@ -23,7 +23,9 @@ const navLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
-export default function Navbar() {
+import { ISiteSettings } from "@/types";
+
+export default function Navbar({ settings }: { settings?: ISiteSettings | null }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -61,13 +63,13 @@ export default function Navbar() {
             Premium Lighting Solutions — Since 2010
           </p>
           <div className="flex items-center gap-6 text-xs text-muted">
-            <a href="tel:+919274776616" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href={`tel:${settings?.phones?.[0] || "+919274776616"}`} className="flex items-center gap-1.5 hover:text-accent transition-colors">
               <Phone size={11} />
-              +91 92747 76616
+              {settings?.phones?.[0] || "+91 92747 76616"}
             </a>
-            <a href="mailto:arev.lights@gmail.com" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href={`mailto:${settings?.emails?.[0] || "arev.lights@gmail.com"}`} className="flex items-center gap-1.5 hover:text-accent transition-colors">
               <Mail size={11} />
-              arev.lights@gmail.com
+              {settings?.emails?.[0] || "arev.lights@gmail.com"}
             </a>
           </div>
         </div>

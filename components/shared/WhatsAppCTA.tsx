@@ -2,10 +2,11 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { MessageCircle, X } from "lucide-react";
+import { ISiteSettings } from "@/types";
 
-export default function WhatsAppCTA() {
+export default function WhatsAppCTA({ settings }: { settings?: ISiteSettings | null }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const whatsappNumber = "919274776616";
+  const whatsappNumber = settings?.whatsappNumber || "919274776616";
   const message = "Hello! I'm interested in AREV Lights products. Please help me.";
 
   return (

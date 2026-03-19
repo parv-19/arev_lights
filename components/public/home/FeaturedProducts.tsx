@@ -16,7 +16,8 @@ const DUMMY_PRODUCTS = [
 import ProductCard from "@/components/public/products/ProductCard";
 import type { IProduct } from "@/types";
 
-export default function FeaturedProducts() {
+export default function FeaturedProducts({ products: propProducts }: { products?: IProduct[] }) {
+  const products = propProducts?.length ? propProducts : DUMMY_PRODUCTS as unknown as IProduct[];
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start", slidesToScroll: 1 },
     [Autoplay({ delay: 4000, stopOnInteraction: true })]
@@ -43,9 +44,9 @@ export default function FeaturedProducts() {
         <div className="relative">
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex gap-5">
-              {DUMMY_PRODUCTS.map((p) => (
+              {products.map((p) => (
                 <div key={p._id} className="flex-none w-72 sm:w-80 lg:w-[calc(25%-15px)]">
-                  <ProductCard product={p as unknown as IProduct} />
+                  <ProductCard product={p} />
                 </div>
               ))}
             </div>
