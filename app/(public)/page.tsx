@@ -15,18 +15,39 @@ export const metadata: Metadata = {
     "Discover premium architectural and decorative lighting solutions. Trusted by architects, interior designers, and builders across India.",
 };
 
-export default function HomePage() {
+async function getHomepageData() {
+  try {
+    const base = process.env.NEXTAUTH_URL || "http://localhost:3000";
+    // Using no-store for immediate reflection of changes
+    const res = await fetch(`${base}/api/homepage`, { cache: 'no-store' });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.success ? data.data : [];
+  } catch {
+    return [];
+  }
+}
+
+export default async function HomePage() {
+  const sections = await getHomepageData();
+
+  const getSectionData = (key: string) => sections.find((s: any) => s.sectionKey === key)?.data;
+  const isSectionActive = (key: string) => sections.find((s: any) => s.sectionKey === key)?.isActive !== false;
+
+  const heroBannersData = getSectionData("hero_banners");
+  const heroBanners = heroBannersData?.banners;
+
   return (
     <>
-      <HeroCarousel />
-      <FeaturedCategories />
-      <WhyArev />
-      <FeaturedProducts />
-      <BrandLogosSlider />
-      <ProjectsShowcase />
-      <BrochuresSection />
-      <TestimonialsSlider />
-      <InquiryCTASection />
+      {isSectionActive("hero_banners") && <HeroCarousel banners={heroBanners} />}
+      {isSectionActive("featured_categories") && <FeaturedCategories />}
+      {isSectionActive("why_arev") && <WhyArev />}
+      {isSectionActive("featured_products") && <FeaturedProducts />}
+      {isSectionActive("partner_logos") && <BrandLogosSlider />}
+      {isSectionActive("projects_showcase") && <ProjectsShowcase />}
+      {isSectionActive("brochures") && <BrochuresSection />}
+      {isSectionActive("testimonials") && <TestimonialsSlider />}
+      {isSectionActive("inquiry_cta") && <InquiryCTASection />}
     </>
   );
 }

@@ -114,14 +114,14 @@ export default function Footer() {
           </div>
           <div className="flex items-center gap-3">
             <Phone size={16} className="text-accent flex-shrink-0" />
-            <a href="tel:+911234567890" className="text-muted text-sm hover:text-accent transition-colors">
-              +91 12345 67890
+            <a href="tel:+919274776616" className="text-muted text-sm hover:text-accent transition-colors">
+              +91 92747 76616
             </a>
           </div>
           <div className="flex items-center gap-3">
             <Mail size={16} className="text-accent flex-shrink-0" />
-            <a href="mailto:info@arevlights.com" className="text-muted text-sm hover:text-accent transition-colors">
-              info@arevlights.com
+            <a href="mailto:arev.lights@gmail.com" className="text-muted text-sm hover:text-accent transition-colors">
+              arev.lights@gmail.com
             </a>
           </div>
         </div>

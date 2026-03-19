@@ -69,7 +69,7 @@ export default function AdminSettingsPage() {
           </div>
           <div>
             <label className="admin-label">WhatsApp Number (with country code)</label>
-            <input className="admin-input" value={form.whatsappNumber} onChange={(e) => setForm(f => ({ ...f, whatsappNumber: e.target.value }))} placeholder="911234567890" />
+            <input className="admin-input" value={form.whatsappNumber} onChange={(e) => setForm(f => ({ ...f, whatsappNumber: e.target.value }))} placeholder="919274776616" />
           </div>
         </div>
 

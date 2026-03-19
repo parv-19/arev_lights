@@ -5,7 +5,7 @@ import { MessageCircle, X } from "lucide-react";
 
 export default function WhatsAppCTA() {
   const [isExpanded, setIsExpanded] = useState(false);
-  const whatsappNumber = "911234567890";
+  const whatsappNumber = "919274776616";
   const message = "Hello! I'm interested in AREV Lights products. Please help me.";
 
   return (

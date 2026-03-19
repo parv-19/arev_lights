@@ -46,7 +46,8 @@ const DEFAULT_BANNERS: HeroBanner[] = [
   },
 ];
 
-export default function HeroCarousel({ banners = DEFAULT_BANNERS }: { banners?: HeroBanner[] }) {
+export default function HeroCarousel({ banners: propBanners }: { banners?: HeroBanner[] }) {
+  const banners = propBanners?.length ? propBanners : DEFAULT_BANNERS;
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 

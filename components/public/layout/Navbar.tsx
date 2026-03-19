@@ -61,13 +61,13 @@ export default function Navbar() {
             Premium Lighting Solutions — Since 2010
           </p>
           <div className="flex items-center gap-6 text-xs text-muted">
-            <a href="tel:+911234567890" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href="tel:+919274776616" className="flex items-center gap-1.5 hover:text-accent transition-colors">
               <Phone size={11} />
-              +91 12345 67890
+              +91 92747 76616
             </a>
-            <a href="mailto:info@arevlights.com" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href="mailto:arev.lights@gmail.com" className="flex items-center gap-1.5 hover:text-accent transition-colors">
               <Mail size={11} />
-              info@arevlights.com
+              arev.lights@gmail.com
             </a>
           </div>
         </div>

@@ -39,7 +39,7 @@ export default function InquiryCTASection() {
             Send Inquiry <ArrowRight size={18} />
           </Link>
           <a
-            href="tel:+911234567890"
+            href="tel:+919274776616"
             className="btn-outline-gold text-base px-8 py-4 flex items-center gap-2"
           >
             <PhoneCall size={17} />

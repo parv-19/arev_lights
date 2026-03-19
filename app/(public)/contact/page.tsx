@@ -55,12 +55,12 @@ export default function ContactPage() {
   };
 
   const whatsappLink = buildWhatsAppLink(
-    settings?.whatsappNumber || "911234567890",
+    settings?.whatsappNumber || "919274776616",
     "Hello! I'd like to get in touch with AREV Lights. Please help me."
   );
 
   const phones = settings?.phones?.length ? settings.phones : ["+91 98765 43210"];
-  const emails = settings?.emails?.length ? settings.emails : ["info@arevlights.com"];
+  const emails = settings?.emails?.length ? settings.emails : ["arev.lights@gmail.com"];
 
   return (
     <>

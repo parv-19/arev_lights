@@ -40,7 +40,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
   if (!product) notFound();
 
   const whatsappLink = buildWhatsAppLink(
-    "911234567890",
+    "919274776616",
     `Hello! I'm interested in "${product.title}" from AREV Lights. Please share more details.`
   );
 
@@ -152,7 +152,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
                 <div className="mt-6 flex items-center gap-2 text-muted text-sm border-t border-border pt-5">
                   <Phone size={14} className="text-accent" />
                   <span>Need help? Call us: </span>
-                  <a href="tel:+911234567890" className="text-accent hover:underline">+91 12345 67890</a>
+                  <a href="tel:+919274776616" className="text-accent hover:underline">+91 92747 76616</a>
                 </div>
               </div>
             </SectionReveal>
