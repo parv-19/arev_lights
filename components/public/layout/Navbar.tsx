@@ -1,37 +1,26 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, Phone, Mail } from "lucide-react";
+import { Menu, X, Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ISiteSettings } from "@/types";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  {
-    label: "Products",
-    href: "/products",
-    children: [
-      { label: "All Products", href: "/products" },
-      { label: "Categories", href: "/categories" },
-      { label: "Brochures", href: "/brochures" },
-    ],
-  },
-  { label: "Projects", href: "/projects" },
+  { label: "Brochures", href: "/brochures" },
+  // { label: "Projects", href: "/projects" }, // Commented out for now
   { label: "Brands", href: "/brands" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
 
-import { ISiteSettings } from "@/types";
-
 export default function Navbar({ settings }: { settings?: ISiteSettings | null }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 60);
@@ -41,19 +30,7 @@ export default function Navbar({ settings }: { settings?: ISiteSettings | null }
 
   useEffect(() => {
     setIsMobileOpen(false);
-    setActiveDropdown(null);
   }, [pathname]);
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setActiveDropdown(null);
-      }
-    };
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
-  }, []);
 
   return (
     <>
@@ -61,12 +38,16 @@ export default function Navbar({ settings }: { settings?: ISiteSettings | null }
       <div className="hidden lg:block bg-surface border-b border-border">
         <div className="container-custom flex justify-between items-center py-2">
           <p className="text-muted text-xs font-label tracking-wider">
-            Premium Lighting Solutions — Since 2010
+            Premium Lighting Solutions — Since 2025
           </p>
           <div className="flex items-center gap-6 text-xs text-muted">
-            <a href={`tel:${settings?.phones?.[0] || "+919274776616"}`} className="flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href="tel:+919274776616" className="flex items-center gap-1.5 hover:text-accent transition-colors">
               <Phone size={11} />
-              {settings?.phones?.[0] || "+91 92747 76616"}
+              +91 92747 76616
+            </a>
+            <span className="text-border">|</span>
+            <a href="tel:+919824076616" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+              +91 98240 76616
             </a>
             <a href={`mailto:${settings?.emails?.[0] || "arev.lights@gmail.com"}`} className="flex items-center gap-1.5 hover:text-accent transition-colors">
               <Mail size={11} />
@@ -104,64 +85,19 @@ export default function Navbar({ settings }: { settings?: ISiteSettings | null }
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-1" ref={dropdownRef}>
-              {navLinks.map((link) =>
-                link.children ? (
-                  <div key={link.label} className="relative">
-                    <button
-                      onClick={() =>
-                        setActiveDropdown(activeDropdown === link.label ? null : link.label)
-                      }
-                      className={cn(
-                        "flex items-center gap-1 px-4 py-2 font-label text-sm uppercase tracking-wider transition-colors duration-200",
-                        pathname.startsWith(link.href) ? "text-accent" : "text-neutral/75 hover:text-accent"
-                      )}
-                    >
-                      {link.label}
-                      <ChevronDown
-                        size={13}
-                        className={cn(
-                          "transition-transform duration-200",
-                          activeDropdown === link.label ? "rotate-180 text-accent" : ""
-                        )}
-                      />
-                    </button>
-
-                    <AnimatePresence>
-                      {activeDropdown === link.label && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 8 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute top-full left-0 mt-2 w-52 bg-surface border border-border shadow-card rounded-sm overflow-hidden"
-                        >
-                          {link.children.map((child) => (
-                            <Link
-                              key={child.href}
-                              href={child.href}
-                              className="block px-5 py-3 text-sm text-neutral/75 hover:text-accent hover:bg-surface-2 border-b border-border/50 last:border-0 transition-colors duration-150 font-label tracking-wide"
-                            >
-                              {child.label}
-                            </Link>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={cn(
-                      "px-4 py-2 font-label text-sm uppercase tracking-wider transition-colors duration-200",
-                      pathname === link.href ? "text-accent" : "text-neutral/75 hover:text-accent"
-                    )}
-                  >
-                    {link.label}
-                  </Link>
-                )
-              )}
+            <nav className="hidden lg:flex items-center gap-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "px-4 py-2 font-label text-sm uppercase tracking-wider transition-colors duration-200",
+                    pathname === link.href ? "text-accent" : "text-neutral/75 hover:text-accent"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              ))}
             </nav>
 
             {/* Desktop CTA */}
@@ -197,26 +133,16 @@ export default function Navbar({ settings }: { settings?: ISiteSettings | null }
             >
               <nav className="container-custom py-4 flex flex-col gap-1">
                 {navLinks.map((link) => (
-                  <div key={link.label}>
-                    <Link
-                      href={link.href}
-                      className={cn(
-                        "block px-4 py-3 font-label text-sm uppercase tracking-wider border-b border-border/50 transition-colors duration-200",
-                        pathname === link.href ? "text-accent" : "text-neutral/75 hover:text-accent"
-                      )}
-                    >
-                      {link.label}
-                    </Link>
-                    {link.children?.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className="block pl-8 pr-4 py-2.5 text-xs text-muted hover:text-accent transition-colors duration-150 font-label tracking-wide"
-                      >
-                        — {child.label}
-                      </Link>
-                    ))}
-                  </div>
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={cn(
+                      "block px-4 py-3 font-label text-sm uppercase tracking-wider border-b border-border/50 transition-colors duration-200",
+                      pathname === link.href ? "text-accent" : "text-neutral/75 hover:text-accent"
+                    )}
+                  >
+                    {link.label}
+                  </Link>
                 ))}
                 <div className="flex gap-3 pt-4">
                   <Link href="/dealer-inquiry" className="btn-outline-gold flex-1 justify-center text-xs py-2.5">

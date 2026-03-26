@@ -29,13 +29,13 @@ export async function POST(req: NextRequest) {
   try {
     await dbConnect();
     const body = await req.json();
-    if (!body.title || !body.pdfUrl || !body.pdfPublicId) {
-      return NextResponse.json({ success: false, message: "Title and PDF are required" }, { status: 400 });
+    if (!body.title) {
+      return NextResponse.json({ success: false, message: "Title is required" }, { status: 400 });
     }
     const brochure = await Brochure.create(body);
     return NextResponse.json({ success: true, data: brochure }, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error("[BROCHURES_POST]", error);
-    return NextResponse.json({ success: false, message: "Failed to create brochure" }, { status: 500 });
+    return NextResponse.json({ success: false, message: "Failed to create brochure", error: error?.message, stack: error?.stack }, { status: 500 });
   }
 }

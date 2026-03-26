@@ -1,15 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Download, Eye, Search } from "lucide-react";
+import { Search, FileText } from "lucide-react";
 import SectionReveal from "@/components/shared/SectionReveal";
+import LeadCaptureModal from "@/components/shared/LeadCaptureModal";
 import { IBrochure, ICategory } from "@/types";
 
+// Real brochure categories based on AREV Lights' actual service portfolio
 const FALLBACK: IBrochure[] = [
-  { _id: "1", title: "Indoor Lighting Catalogue 2025", category: undefined, pdfUrl: "#", pdfPublicId: "", previewImage: { url: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=400&q=70", publicId: "" }, isVisible: true, sortOrder: 0, createdAt: "" },
-  { _id: "2", title: "Outdoor & Architectural Brochure", category: undefined, pdfUrl: "#", pdfPublicId: "", previewImage: { url: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=400&q=70", publicId: "" }, isVisible: true, sortOrder: 1, createdAt: "" },
-  { _id: "3", title: "Decorative Lighting Lookbook", category: undefined, pdfUrl: "#", pdfPublicId: "", previewImage: { url: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=400&q=70", publicId: "" }, isVisible: true, sortOrder: 2, createdAt: "" },
-  { _id: "4", title: "Smart Lighting Solutions Guide", category: undefined, pdfUrl: "#", pdfPublicId: "", previewImage: { url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=70", publicId: "" }, isVisible: true, sortOrder: 3, createdAt: "" },
+  { _id: "1", title: "Residential Lighting Catalogue", category: undefined, pdfUrl: "#", pdfPublicId: "", previewImage: { url: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=400&q=70", publicId: "" }, isVisible: true, sortOrder: 0, createdAt: "" },
+  { _id: "2", title: "Commercial & Architectural Lighting", category: undefined, pdfUrl: "#", pdfPublicId: "", previewImage: { url: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=400&q=70", publicId: "" }, isVisible: true, sortOrder: 1, createdAt: "" },
+  { _id: "3", title: "Hotel & Hospitality Lighting Guide", category: undefined, pdfUrl: "#", pdfPublicId: "", previewImage: { url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=70", publicId: "" }, isVisible: true, sortOrder: 2, createdAt: "" },
+  { _id: "4", title: "Landscape & Outdoor Lighting", category: undefined, pdfUrl: "#", pdfPublicId: "", previewImage: { url: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=400&q=70", publicId: "" }, isVisible: true, sortOrder: 3, createdAt: "" },
+  { _id: "5", title: "Designer Fans & Decorative Lighting", category: undefined, pdfUrl: "#", pdfPublicId: "", previewImage: { url: "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=400&q=70", publicId: "" }, isVisible: true, sortOrder: 4, createdAt: "" },
+  { _id: "6", title: "Smart Touch Switches & Power Track Systems", category: undefined, pdfUrl: "#", pdfPublicId: "", previewImage: { url: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=70", publicId: "" }, isVisible: true, sortOrder: 5, createdAt: "" },
 ];
 
 export default function BrochuresPage() {
@@ -18,6 +22,7 @@ export default function BrochuresPage() {
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("all");
   const [search, setSearch] = useState("");
+  const [activeModal, setActiveModal] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.all([
@@ -45,12 +50,12 @@ export default function BrochuresPage() {
           <SectionReveal>
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="gold-line" />
-              <span className="section-label">Downloads</span>
+              <span className="section-label">Product Literature</span>
               <div className="gold-line" />
             </div>
             <h1 className="heading-display mb-4">Product Brochures</h1>
             <p className="text-muted max-w-lg mx-auto">
-              Download our product catalogues and brochures. All documents are updated regularly with our latest offerings.
+              Request any of our product catalogues and our team will personally share them with you on WhatsApp.
             </p>
           </SectionReveal>
         </div>
@@ -69,21 +74,6 @@ export default function BrochuresPage() {
                 onChange={e => setSearch(e.target.value)}
               />
             </div>
-            <button
-              onClick={() => setActiveCategory("all")}
-              className={`px-4 py-2.5 text-xs font-label uppercase tracking-wider border transition-all ${activeCategory === "all" ? "border-accent bg-accent/10 text-accent" : "border-border text-muted hover:border-border-light hover:text-neutral"}`}
-            >
-              All
-            </button>
-            {categories.map(cat => (
-              <button
-                key={cat._id}
-                onClick={() => setActiveCategory(cat._id)}
-                className={`px-4 py-2.5 text-xs font-label uppercase tracking-wider border transition-all ${activeCategory === cat._id ? "border-accent bg-accent/10 text-accent" : "border-border text-muted hover:border-border-light hover:text-neutral"}`}
-              >
-                {cat.name}
-              </button>
-            ))}
           </div>
 
           {loading ? (
@@ -109,60 +99,33 @@ export default function BrochuresPage() {
                         />
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <Download size={32} className="text-muted" />
+                          <FileText size={32} className="text-muted" />
                         </div>
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <a
-                          href={b.pdfUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-3 bg-primary/80 border border-accent/50 text-accent hover:bg-accent hover:text-primary transition-all"
-                          title="Preview"
-                        >
-                          <Eye size={16} />
-                        </a>
-                        <a
-                          href={b.pdfUrl}
-                          download
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="p-3 bg-accent text-primary hover:bg-accent-light transition-all"
-                          title="Download"
-                        >
-                          <Download size={16} />
-                        </a>
-                      </div>
                     </div>
 
                     {/* Info */}
                     <div className="p-4">
-                      {b.category && (
-                        <span className="section-label text-[10px] block mb-1.5">{(b.category as ICategory).name}</span>
-                      )}
                       <h3 className="font-display text-sm text-neutral leading-snug mb-3">{b.title}</h3>
-                      <div className="flex gap-2">
-                        <a
-                          href={b.pdfUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 flex items-center justify-center gap-1.5 py-2 border border-border text-muted text-xs font-label uppercase tracking-wide hover:border-accent hover:text-accent transition-all"
-                        >
-                          <Eye size={12} /> View
-                        </a>
-                        <a
-                          href={b.pdfUrl}
-                          download
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 flex items-center justify-center gap-1.5 py-2 bg-accent text-primary text-xs font-label uppercase tracking-wide hover:bg-accent-light transition-all"
-                        >
-                          <Download size={12} /> Download
-                        </a>
-                      </div>
+
+                      {/* Single CTA – no direct PDF access */}
+                      <button
+                        onClick={() => setActiveModal(b._id)}
+                        className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-accent text-primary text-xs font-label font-semibold uppercase tracking-wide hover:bg-accent-light transition-all"
+                      >
+                        <FileText size={12} /> Request Brochure
+                      </button>
                     </div>
                   </div>
+
+                  {/* Lead modal per brochure */}
+                  {activeModal === b._id && (
+                    <LeadCaptureModal
+                      brochureTitle={b.title}
+                      onClose={() => setActiveModal(null)}
+                    />
+                  )}
                 </SectionReveal>
               ))}
             </div>

@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import { Plus, Pencil, Trash2, ToggleLeft, ToggleRight, Upload, X } from "lucide-react";
+import { Plus, Pencil, Trash2, ToggleLeft, ToggleRight, X } from "lucide-react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { IBrochure, ICategory } from "@/types";
@@ -21,7 +20,6 @@ export default function AdminBrochuresPage() {
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<IBrochure | null>(null);
   const [form, setForm] = useState<BrochureForm>({ title: "", categoryId: "", sortOrder: 0, isVisible: true });
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [previewFile, setPreviewFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [saving, setSaving] = useState(false);
@@ -36,34 +34,25 @@ export default function AdminBrochuresPage() {
 
   useEffect(() => { fetch_(); }, []);
 
-  const onDropPdf = useCallback((files: File[]) => { if (files[0]) setPdfFile(files[0]); }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop: onDropPdf, accept: { "application/pdf": [] }, maxFiles: 1 });
-
   const openNew = () => {
     setEditing(null);
     setForm({ title: "", categoryId: "", sortOrder: brochures.length, isVisible: true });
-    setPdfFile(null); setPreviewFile(null); setPreviewUrl(""); setShowForm(true);
+    setPreviewFile(null); setPreviewUrl(""); setShowForm(true);
   };
 
   const openEdit = (b: IBrochure) => {
     setEditing(b);
     setForm({ title: b.title, categoryId: (b.category as ICategory)?._id || "", sortOrder: b.sortOrder, isVisible: b.isVisible });
-    setPreviewUrl(b.previewImage?.url || ""); setPdfFile(null); setPreviewFile(null); setShowForm(true);
+    setPreviewUrl(b.previewImage?.url || ""); setPreviewFile(null); setShowForm(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editing && !pdfFile) { toast.error("Please upload a PDF"); return; }
     setSaving(true);
 
     let pdfUrl = editing?.pdfUrl || "";
     let pdfPublicId = editing?.pdfPublicId || "";
     let previewImage = editing?.previewImage || { url: "", publicId: "" };
-
-    if (pdfFile) {
-      try { const r = await uploadFile(pdfFile, "arev-lights/brochures", "raw"); pdfUrl = r.url; pdfPublicId = r.publicId; }
-      catch { toast.error("PDF upload failed"); setSaving(false); return; }
-    }
     if (previewFile) {
       try { previewImage = await uploadFile(previewFile, "arev-lights/brochures/previews"); }
       catch { toast.error("Preview upload failed"); }
@@ -104,30 +93,14 @@ export default function AdminBrochuresPage() {
               <div><label className="admin-label">Title *</label><input className="admin-input" value={form.title} onChange={(e) => setForm(f => ({ ...f, title: e.target.value }))} required /></div>
               <div><label className="admin-label">Category</label><select className="admin-input" value={form.categoryId} onChange={(e) => setForm(f => ({ ...f, categoryId: e.target.value }))}><option value="">None</option>{categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}</select></div>
 
-              {/* PDF Dropzone */}
-              <div>
-                <label className="admin-label">PDF File {!editing && "*"}</label>
-                <div {...getRootProps()} className={`border-2 border-dashed rounded-md p-6 text-center cursor-pointer transition-colors ${isDragActive ? "border-accent bg-accent/5" : "border-border hover:border-accent/50"}`}>
-                  <input {...getInputProps()} />
-                  {pdfFile ? (
-                    <div className="flex items-center justify-center gap-2 text-accent text-sm">
-                      <Upload size={16} /> {pdfFile.name}
-                    </div>
-                  ) : (
-                    <div>
-                      <Upload size={24} className="text-muted mx-auto mb-2" />
-                      <p className="text-muted text-sm">{isDragActive ? "Drop PDF here" : "Drop PDF or click to select"}</p>
-                      {editing?.pdfUrl && <p className="text-accent text-xs mt-1">Current PDF: already uploaded</p>}
-                    </div>
-                  )}
-                </div>
-              </div>
-
               {/* Preview Image */}
               <div>
                 <label className="admin-label">Preview Image</label>
                 <div className="flex items-center gap-3">
-                  {previewUrl && <Image src={previewUrl} alt="preview" width={80} height={60} className="object-cover border border-border rounded" />}
+                  {previewUrl && (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={previewUrl} alt="preview" width={80} height={60} className="object-cover border border-border rounded" />
+                  )}
                   <label className="cursor-pointer btn-outline-gold text-xs py-2 px-4">
                     Choose Image
                     <input type="file" accept="image/*" onChange={(e) => { const f = e.target.files?.[0]; if (f) { setPreviewFile(f); setPreviewUrl(URL.createObjectURL(f)); } }} className="hidden" />
@@ -168,8 +141,7 @@ export default function AdminBrochuresPage() {
               <p className="text-muted text-xs mt-1">Order: {b.sortOrder} · {b.isVisible ? "Visible" : "Hidden"}</p>
             </div>
             <div className="flex gap-2 border-t border-border pt-2">
-              <a href={b.pdfUrl} target="_blank" rel="noopener noreferrer" className="text-accent text-xs hover:underline flex-1">View PDF</a>
-              <button onClick={() => openEdit(b)} className="p-1.5 text-muted hover:text-accent transition-colors"><Pencil size={13} /></button>
+              <button onClick={() => openEdit(b)} className="p-1.5 text-muted hover:text-accent transition-colors ml-auto"><Pencil size={13} /></button>
               <button onClick={() => handleDelete(b)} className="p-1.5 text-muted hover:text-danger transition-colors"><Trash2 size={13} /></button>
             </div>
           </div>

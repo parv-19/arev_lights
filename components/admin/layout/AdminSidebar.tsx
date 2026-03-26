@@ -5,27 +5,27 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  LayoutDashboard, Home, Tag, ShoppingBag, FileText, Image as ImageIcon,
-  MessageSquare, Star, Globe, Inbox, Settings, BarChart2,
-  ChevronLeft, ChevronRight, LogOut, Menu, X,
+  LayoutDashboard, Home, FileText, Image as ImageIcon,
+  Star, Globe, Inbox, Settings, BarChart2,
+  ChevronLeft, ChevronRight, LogOut, Menu, X, UserCheck, Video,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard, exact: true },
   { label: "Homepage CMS", href: "/admin/homepage", icon: Home },
-  { label: "Categories", href: "/admin/categories", icon: Tag },
-  { label: "Products", href: "/admin/products", icon: ShoppingBag },
   { label: "Brochures", href: "/admin/brochures", icon: FileText },
-  { label: "Projects", href: "/admin/projects", icon: ImageIcon },
+  // { label: "Projects", href: "/admin/projects", icon: ImageIcon }, // Commented out for now
+  { label: "Glimpses", href: "/admin/glimpses", icon: Video },
   { label: "Testimonials", href: "/admin/testimonials", icon: Star },
   { label: "Brands", href: "/admin/brands", icon: Globe },
   { label: "Inquiries", href: "/admin/inquiries", icon: Inbox },
+  { label: "Leads", href: "/admin/leads", icon: UserCheck },
   { label: "Settings", href: "/admin/settings", icon: Settings },
   { label: "SEO", href: "/admin/seo", icon: BarChart2 },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ settings }: { settings?: any }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();

@@ -1,1 +1,0 @@
-Ensure all images, brochures, logos, gallery items, featured banners, and product media are uploaded and managed through the admin dashboard with proper preview, replace, delete, sort order, and visibility controls.

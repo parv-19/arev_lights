@@ -1,18 +1,38 @@
-import Link from "next/link";
+"use client";
+import { useState } from "react";
 import Image from "next/image";
 import SectionReveal from "@/components/shared/SectionReveal";
-import { Download, Eye, FileText } from "lucide-react";
-
-const DUMMY_BROCHURES = [
-  { _id: "1", title: "Indoor Lighting Catalogue 2024", categoryName: "Indoor", previewUrl: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=400&q=80", pdfUrl: "#" },
-  { _id: "2", title: "Outdoor Lighting Solutions", categoryName: "Outdoor", previewUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80", pdfUrl: "#" },
-  { _id: "3", title: "Architectural Lighting Guide", categoryName: "Architectural", previewUrl: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=400&q=80", pdfUrl: "#" },
-];
-
+import LeadCaptureModal from "@/components/shared/LeadCaptureModal";
+import { FileText } from "lucide-react";
+import Link from "next/link";
 import { IBrochure } from "@/types";
+
+// Real AREV Lights brochure categories from their product portfolio
+const DUMMY_BROCHURES = [
+  {
+    _id: "1",
+    title: "Residential Lighting Catalogue",
+    categoryName: "Residential",
+    previewUrl: "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=400&q=80",
+  },
+  {
+    _id: "2",
+    title: "Commercial & Architectural Lighting",
+    categoryName: "Commercial",
+    previewUrl: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=400&q=80",
+  },
+  {
+    _id: "3",
+    title: "Hotel & Hospitality Lighting Guide",
+    categoryName: "Hospitality",
+    previewUrl: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
+  },
+];
 
 export default function BrochuresSection({ brochures: propBrochures }: { brochures?: IBrochure[] }) {
   const brochures = propBrochures?.length ? propBrochures : DUMMY_BROCHURES as unknown as IBrochure[];
+  const [activeModal, setActiveModal] = useState<string | null>(null);
+
   return (
     <section className="section-padding bg-surface border-y border-border">
       <div className="container-custom">
@@ -23,9 +43,9 @@ export default function BrochuresSection({ brochures: propBrochures }: { brochur
             <span className="section-label">Product Literature</span>
             <div className="gold-line" />
           </div>
-          <h2 className="heading-display">Download Brochures</h2>
+          <h2 className="heading-display">Request Our Brochures</h2>
           <p className="text-muted mt-4 max-w-lg mx-auto">
-            Get detailed product specifications, application guides, and complete catalogues — all in one place.
+            Get detailed catalogues for Residential, Commercial, Hospitality, and Landscape lighting — shared personally by our team on WhatsApp.
           </p>
         </SectionReveal>
 
@@ -44,7 +64,6 @@ export default function BrochuresSection({ brochures: propBrochures }: { brochur
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-primary/40 group-hover:bg-primary/20 transition-colors duration-300" />
-                  {/* PDF Icon overlay */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-12 h-12 bg-accent/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-90 group-hover:scale-100">
                       <FileText size={20} className="text-primary" />
@@ -53,29 +72,23 @@ export default function BrochuresSection({ brochures: propBrochures }: { brochur
                 </div>
 
                 <div className="p-5">
-                  <span className="section-label text-[10px] block mb-2">{(b as any).categoryName || (b.category as any)?.name || 'General'}</span>
                   <h3 className="font-display text-lg text-neutral mb-4 leading-snug">{b.title}</h3>
 
-                  {/* Actions */}
-                  <div className="flex gap-2">
-                    <a
-                      href={b.pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 border border-border text-muted hover:text-accent hover:border-accent text-xs font-label uppercase tracking-wide transition-all duration-200"
-                    >
-                      <Eye size={13} /> Preview
-                    </a>
-                    <a
-                      href={b.pdfUrl}
-                      download
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-accent text-primary text-xs font-label font-semibold uppercase tracking-wide hover:bg-accent-light transition-colors duration-200"
-                    >
-                      <Download size={13} /> Download
-                    </a>
-                  </div>
+                  <button
+                    onClick={() => setActiveModal(b._id)}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 bg-accent text-primary text-xs font-label font-semibold uppercase tracking-wide hover:bg-accent-light transition-colors duration-200"
+                  >
+                    <FileText size={13} /> Request Brochure
+                  </button>
                 </div>
               </div>
+
+              {activeModal === b._id && (
+                <LeadCaptureModal
+                  brochureTitle={b.title}
+                  onClose={() => setActiveModal(null)}
+                />
+              )}
             </SectionReveal>
           ))}
         </div>

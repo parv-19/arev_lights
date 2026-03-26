@@ -1,1 +1,0 @@
-Now generate the secure admin dashboard for AREV Lights that manages banners, homepage sections, categories, products, brochures, projects, testimonials, inquiries, contact details, and SEO metadata. Make it clean, practical, and production-grade.

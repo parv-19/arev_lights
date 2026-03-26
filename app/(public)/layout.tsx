@@ -19,7 +19,7 @@ export default async function PublicLayout({ children }: { children: React.React
 
   return (
     <>
-      <Navbar settings={settings} />
+      {settings?.showNavbar !== false && <Navbar settings={settings} />}
       <main className="min-h-screen">{children}</main>
       <Footer settings={settings} />
       <WhatsAppCTA settings={settings} />

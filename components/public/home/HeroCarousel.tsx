@@ -73,11 +73,11 @@ export default function HeroCarousel({ banners: propBanners }: { banners?: HeroB
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Background Image */}
+      {/* Background Image - Optimized for LCP */}
       <AnimatePresence mode="wait">
         <motion.div
           key={current}
-          initial={{ opacity: 0, scale: 1.05 }}
+          initial={{ opacity: current === 0 ? 1 : 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.98 }}
           transition={{ duration: 1.0, ease: [0.25, 0.1, 0.25, 1] }}
@@ -87,9 +87,11 @@ export default function HeroCarousel({ banners: propBanners }: { banners?: HeroB
             src={banner.imageUrl}
             alt={banner.title}
             fill
-            priority
+            priority={current === 0}
+            fetchPriority={current === 0 ? "high" : "auto"}
             className="object-cover"
             sizes="100vw"
+            quality={current === 0 ? 90 : 80}
           />
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/50 to-transparent" />

@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import SessionWrapper from "@/components/shared/SessionWrapper";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
   title: {
     default: "AREV Lights – Premium Lighting Solutions",
     template: "%s | AREV Lights",
@@ -16,6 +17,11 @@ export const metadata: Metadata = {
     description: "Premium architectural and decorative lighting brand.",
     type: "website",
     locale: "en_IN",
+    images: ["/logo.png"],
+  },
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
   },
 };
 

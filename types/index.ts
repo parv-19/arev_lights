@@ -41,8 +41,8 @@ export interface IBrochure {
   _id: string;
   title: string;
   category?: ICategory;
-  pdfUrl: string;
-  pdfPublicId: string;
+  pdfUrl?: string;
+  pdfPublicId?: string;
   previewImage: CloudinaryMedia;
   isVisible: boolean;
   sortOrder: number;
@@ -126,6 +126,9 @@ export interface ISiteSettings {
   };
   mapEmbedUrl?: string;
   footerTagline?: string;
+  showNavbar?: boolean;
+  showWhyArev?: boolean;
+  showProjects?: boolean;
 }
 
 export interface ISeoMetadata {

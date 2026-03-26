@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { ISiteSettings } from "@/types";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, ToggleLeft, ToggleRight } from "lucide-react";
 
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<ISiteSettings | null>(null);
@@ -12,6 +12,9 @@ export default function AdminSettingsPage() {
     address: "", phones: [""], emails: [""], whatsappNumber: "",
     footerTagline: "", mapEmbedUrl: "",
     socialLinks: { instagram: "", facebook: "", linkedin: "", youtube: "", twitter: "" },
+    showNavbar: true,
+    showWhyArev: true,
+    showProjects: true,
   });
 
   useEffect(() => {
@@ -26,6 +29,9 @@ export default function AdminSettingsPage() {
           footerTagline: s.footerTagline || "",
           mapEmbedUrl: s.mapEmbedUrl || "",
           socialLinks: { instagram: s.socialLinks?.instagram || "", facebook: s.socialLinks?.facebook || "", linkedin: s.socialLinks?.linkedin || "", youtube: s.socialLinks?.youtube || "", twitter: s.socialLinks?.twitter || "" },
+          showNavbar: s.showNavbar ?? true,
+          showWhyArev: s.showWhyArev ?? true,
+          showProjects: s.showProjects ?? true,
         });
         setSettings(d.data);
       }
@@ -56,6 +62,41 @@ export default function AdminSettingsPage() {
       <h1 className="text-neutral text-xl font-semibold">Contact & Company Settings</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* UI Visibility Settings */}
+        <div className="admin-card space-y-4">
+          <h2 className="text-neutral font-medium text-sm">UI Visibility Settings</h2>
+          
+          <div className="flex items-center justify-between border-b border-border pb-4">
+            <div>
+              <p className="admin-label mb-0">Show Navbar</p>
+              <p className="text-muted text-xs">Toggle the top navigation bar visibility across the public site.</p>
+            </div>
+            <button type="button" onClick={() => setForm(f => ({ ...f, showNavbar: !f.showNavbar }))}>
+              {form.showNavbar ? <ToggleRight size={28} className="text-success" /> : <ToggleLeft size={28} className="text-muted" />}
+            </button>
+          </div>
+
+          <div className="flex items-center justify-between border-b border-border py-4">
+            <div>
+              <p className="admin-label mb-0">Show &quot;Why AREV&quot; (What) Section</p>
+              <p className="text-muted text-xs">Toggle the &quot;What we do / Why AREV&quot; section on the homepage.</p>
+            </div>
+            <button type="button" onClick={() => setForm(f => ({ ...f, showWhyArev: !f.showWhyArev }))}>
+              {form.showWhyArev ? <ToggleRight size={28} className="text-success" /> : <ToggleLeft size={28} className="text-muted" />}
+            </button>
+          </div>
+
+          {/* <div className="flex items-center justify-between pt-2">
+            <div>
+              <p className="admin-label mb-0">Show Projects Module</p>
+              <p className="text-muted text-xs">Toggle the entire Projects system (hides nav links and homepage section).</p>
+            </div>
+            <button type="button" onClick={() => setForm(f => ({ ...f, showProjects: !f.showProjects }))}>
+              {form.showProjects ? <ToggleRight size={28} className="text-success" /> : <ToggleLeft size={28} className="text-muted" />}
+            </button>
+          </div> */}
+        </div>
+
         {/* Address */}
         <div className="admin-card space-y-4">
           <h2 className="text-neutral font-medium text-sm">Company Details</h2>

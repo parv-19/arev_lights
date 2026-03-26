@@ -14,6 +14,9 @@ export interface ISiteSettings extends Document {
   };
   mapEmbedUrl?: string;
   footerTagline?: string;
+  showNavbar?: boolean;
+  showWhyArev?: boolean;
+  showProjects?: boolean;
   updatedAt: Date;
 }
 
@@ -32,6 +35,9 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
     },
     mapEmbedUrl: { type: String, default: "" },
     footerTagline: { type: String, default: "Illuminating Spaces, Inspiring Lives." },
+    showNavbar: { type: Boolean, default: true },
+    showWhyArev: { type: Boolean, default: true },
+    showProjects: { type: Boolean, default: true },
   },
   { timestamps: true }
 );

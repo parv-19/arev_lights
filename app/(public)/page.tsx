@@ -1,20 +1,19 @@
 import HeroCarousel from "@/components/public/home/HeroCarousel";
-import FeaturedCategories from "@/components/public/home/FeaturedCategories";
 import WhyArev from "@/components/public/home/WhyArev";
-import FeaturedProducts from "@/components/public/home/FeaturedProducts";
 import BrandLogosSlider from "@/components/public/home/BrandLogosSlider";
 import ProjectsShowcase from "@/components/public/home/ProjectsShowcase";
+import GlimpsesSection from "@/components/public/home/GlimpsesSection";
 import BrochuresSection from "@/components/public/home/BrochuresSection";
 import TestimonialsSlider from "@/components/public/home/TestimonialsSlider";
 import InquiryCTASection from "@/components/public/home/InquiryCTASection";
 import type { Metadata } from "next";
 import dbConnect from "@/lib/db";
-import Category from "@/models/Category";
-import Product from "@/models/Product";
 import Brand from "@/models/Brand";
 import Project from "@/models/Project";
 import Testimonial from "@/models/Testimonial";
 import Brochure from "@/models/Brochure";
+import Glimpse from "@/models/Glimpse";
+import SiteSettings from "@/models/SiteSettings";
 
 export const metadata: Metadata = {
   title: "AREV Lights – Premium Lighting Solutions",
@@ -47,23 +46,25 @@ export default async function HomePage() {
   await dbConnect();
   const cleanData = (d: any) => JSON.parse(JSON.stringify(d));
 
-  const [categories, products, brands, projects, testimonials, brochures] = await Promise.all([
-    Category.find({ isActive: true }).sort({ sortOrder: 1 }).limit(8).lean(),
-    Product.find({ isActive: true, isFeatured: true }).populate("category").limit(8).lean(),
+  const [brands, projects, testimonials, brochures, glimpses, settingsObj] = await Promise.all([
     Brand.find({ isActive: true }).sort({ sortOrder: 1 }).lean(),
     Project.find({ isActive: true, isFeatured: true }).limit(6).lean(),
     Testimonial.find({ isVisible: true }).sort({ sortOrder: 1 }).lean(),
     Brochure.find({ isVisible: true }).populate("category").sort({ sortOrder: 1 }).limit(6).lean(),
+    Glimpse.find({ isVisible: true }).sort({ sortOrder: 1 }).limit(3).lean(),
+    SiteSettings.findOne({}).lean(),
   ]);
+
+  const showWhyArev = (settingsObj as any)?.showWhyArev !== false;
+  const showProjects = (settingsObj as any)?.showProjects !== false;
 
   return (
     <>
       {isSectionActive("hero_banners") && <HeroCarousel banners={heroBanners} />}
-      {isSectionActive("featured_categories") && <FeaturedCategories categories={cleanData(categories)} />}
-      {isSectionActive("why_arev") && <WhyArev />}
-      {isSectionActive("featured_products") && <FeaturedProducts products={cleanData(products)} />}
+      {isSectionActive("why_arev") && showWhyArev && <WhyArev />}
       {isSectionActive("partner_logos") && <BrandLogosSlider brands={cleanData(brands)} />}
-      {isSectionActive("projects_showcase") && <ProjectsShowcase projects={cleanData(projects)} />}
+      {/* {isSectionActive("projects_showcase") && showProjects && <ProjectsShowcase projects={cleanData(projects)} />} */}
+      <GlimpsesSection glimpses={cleanData(glimpses)} />
       {isSectionActive("brochures") && <BrochuresSection brochures={cleanData(brochures)} />}
       {isSectionActive("testimonials") && <TestimonialsSlider testimonials={cleanData(testimonials)} />}
       {isSectionActive("inquiry_cta") && <InquiryCTASection />}

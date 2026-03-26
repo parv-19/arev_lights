@@ -1,36 +1,36 @@
 import SectionReveal from "@/components/shared/SectionReveal";
-import { Lightbulb, ShieldCheck, Wrench, Clock, Globe, Award } from "lucide-react";
+import { Lightbulb, ShieldCheck, Wrench, RefreshCcw, Globe, Award } from "lucide-react";
 
 const REASONS = [
   {
-    Icon: Lightbulb,
-    title: "Premium Quality",
-    desc: "Every product meets the highest quality standards with rigorous testing and certified materials.",
+    Icon: Globe,
+    title: "Wide Range of Solutions",
+    desc: "Indoor, outdoor, architectural, decorative, and landscape lighting — all from one trusted partner.",
   },
   {
     Icon: ShieldCheck,
-    title: "Trusted Brand",
-    desc: "Trusted by 1000+ architects, designers, and contractors across India for over a decade.",
+    title: "3-Year Warranty",
+    desc: "2-year company warranty plus 1-year AREV backup warranty on every product — zero hassle.",
+  },
+  {
+    Icon: RefreshCcw,
+    title: "Hassle-Free Replacement",
+    desc: "No-questions-asked replacement policy. If there's an issue, we resolve it — simply and swiftly.",
+  },
+  {
+    Icon: Lightbulb,
+    title: "Curated Brand Portfolio",
+    desc: "We represent well-known brands known for innovative design, consistent quality, and reliable performance.",
   },
   {
     Icon: Wrench,
-    title: "Expert Support",
-    desc: "Our technical team provides end-to-end support from product selection to installation.",
-  },
-  {
-    Icon: Clock,
-    title: "On-Time Delivery",
-    desc: "Reliable supply chain ensures your orders are fulfilled on schedule, every time.",
-  },
-  {
-    Icon: Globe,
-    title: "Wide Product Range",
-    desc: "From indoor elegance to outdoor durability — over 500+ SKUs across all lighting categories.",
+    title: "End-to-End Support",
+    desc: "From product selection to installation guidance — our team is with you at every step of your project.",
   },
   {
     Icon: Award,
-    title: "Certified Products",
-    desc: "ISI, CE, and RoHS certified products meeting international safety and quality benchmarks.",
+    title: "Inspiring Designers",
+    desc: "Trusted by architects, interior designers, and builders to inspire creative lighting solutions since 2025.",
   },
 ];
 
@@ -51,18 +51,18 @@ export default function WhyArev() {
                 <span className="gradient-text">Choose AREV Lights</span>
               </h2>
               <p className="text-muted leading-relaxed mb-8 max-w-lg">
-                We are more than a lighting supplier. We are your creative partner — providing premium, certified products with the expertise and support to bring your vision to life.
+                AREV Lights is more than a lighting supplier — we are your creative partner, representing a curated portfolio of well-known brands and specializing in customized lighting solutions that inspire designers and exceed client expectations.
               </p>
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-6 py-6 border-y border-border">
                 {[
-                  { value: "500+", label: "Products" },
-                  { value: "1000+", label: "Projects" },
-                  { value: "15+", label: "Years" },
+                  { value: "3 Yrs", label: "Warranty" },
+                  { value: "7+", label: "Service Areas" },
+                  { value: "Since 2025", label: "Established" },
                 ].map((stat) => (
                   <div key={stat.label}>
-                    <p className="font-display text-3xl gradient-text font-semibold">{stat.value}</p>
+                    <p className="font-display text-2xl gradient-text font-semibold">{stat.value}</p>
                     <p className="text-muted text-xs font-label uppercase tracking-wider mt-1">{stat.label}</p>
                   </div>
                 ))}

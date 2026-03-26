@@ -27,25 +27,32 @@ export default function InquiryCTASection() {
 
         <h2 className="font-display text-display-md lg:text-display-lg font-semibold text-neutral mb-6 max-w-2xl mx-auto">
           Have a Project in Mind? <br />
-          <span className="gradient-text">Let&apos;s Illuminate It.</span>
+          <span className="gradient-text">Let&apos;s Illuminate It Together.</span>
         </h2>
 
         <p className="text-muted text-lg max-w-xl mx-auto mb-10 leading-relaxed">
-          Whether you&apos;re an architect, designer, builder, or business owner — our team is ready to help you find the perfect lighting solution.
+          Whether you&apos;re an architect, interior designer, builder, or business owner — AREV Lights brings you a curated portfolio of premium brands and customized solutions that inspire creativity.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link href="/contact" className="btn-gold text-base px-8 py-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full">
+          <Link href="/contact" className="btn-gold text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto justify-center">
             Send Inquiry <ArrowRight size={18} />
           </Link>
           <a
             href="tel:+919274776616"
-            className="btn-outline-gold text-base px-8 py-4 flex items-center gap-2"
+            className="btn-outline-gold text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4 flex items-center justify-center gap-2 w-full sm:w-auto"
           >
             <PhoneCall size={17} />
-            Call Us Now
+            +91 92747 76616
           </a>
-          <Link href="/dealer-inquiry" className="btn-ghost">
+          <a
+            href="tel:+919824076616"
+            className="btn-ghost text-sm flex items-center justify-center gap-2 w-full sm:w-auto"
+          >
+            <PhoneCall size={16} />
+            +91 98240 76616
+          </a>
+          <Link href="/dealer-inquiry" className="btn-ghost w-full sm:w-auto justify-center">
             Become a Dealer →
           </Link>
         </div>

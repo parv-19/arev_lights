@@ -92,11 +92,11 @@
 
   /* ─── Display headings ─── */
   .heading-display {
-    @apply font-display text-display-md leading-tight text-neutral;
+    @apply font-display text-2xl sm:text-display-md leading-tight text-neutral;
   }
 
   .heading-xl {
-    @apply font-display text-display-xl leading-tight text-neutral;
+    @apply font-display text-3xl sm:text-display-xl leading-tight text-neutral;
   }
 
   /* ─── Gradient text ─── */
@@ -109,15 +109,15 @@
 
   /* ─── Premium button styles ─── */
   .btn-gold {
-    @apply inline-flex items-center gap-2 px-7 py-3.5 bg-accent text-primary font-label font-semibold text-sm uppercase tracking-widest transition-all duration-300 hover:bg-accent-light hover:shadow-gold-lg hover:scale-[1.02] active:scale-100;
+    @apply inline-flex items-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 bg-accent text-primary font-label font-semibold text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 hover:bg-accent-light hover:shadow-gold-lg hover:scale-[1.02] active:scale-100 min-h-[44px];
   }
 
   .btn-outline-gold {
-    @apply inline-flex items-center gap-2 px-7 py-3.5 border border-accent text-accent font-label font-semibold text-sm uppercase tracking-widest transition-all duration-300 hover:bg-accent hover:text-primary hover:shadow-gold;
+    @apply inline-flex items-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 border border-accent text-accent font-label font-semibold text-xs sm:text-sm uppercase tracking-widest transition-all duration-300 hover:bg-accent hover:text-primary hover:shadow-gold min-h-[44px];
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-2 px-5 py-2.5 text-neutral/70 font-label text-sm uppercase tracking-wider transition-all duration-200 hover:text-accent;
+    @apply inline-flex items-center gap-2 px-4 py-2.5 sm:px-5 text-neutral/70 font-label text-sm uppercase tracking-wider transition-all duration-200 hover:text-accent min-h-[44px];
   }
 
   /* ─── Card surfaces ─── */
@@ -131,11 +131,11 @@
 
   /* ─── Section padding ─── */
   .section-padding {
-    @apply py-20 px-4 sm:px-6 lg:px-8;
+    @apply py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8;
   }
 
   .section-padding-lg {
-    @apply py-32 px-4 sm:px-6 lg:px-8;
+    @apply py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8;
   }
 
   /* ─── Container ─── */
@@ -172,7 +172,7 @@
   }
 
   .admin-input {
-    @apply w-full bg-surface-2 border border-border text-neutral placeholder-muted rounded-md px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors duration-200;
+    @apply w-full bg-surface-2 border border-border text-neutral placeholder-muted rounded-md px-4 py-3 text-sm focus:outline-none focus:border-accent transition-colors duration-200 min-h-[44px];
   }
 
   .admin-label {

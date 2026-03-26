@@ -116,7 +116,11 @@ export default function AdminProjectsPage() {
                 {imagePreviews.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-2">
                     {imagePreviews.map((prev, i) => (
-                      <div key={i} className="relative"><Image src={prev} alt="" width={64} height={64} className="object-cover rounded border border-accent/30" /><button type="button" onClick={() => removeNewImage(i)} className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-danger rounded-full flex items-center justify-center"><X size={9} className="text-white" /></button></div>
+                      <div key={i} className="relative">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={prev} alt="" width={64} height={64} className="object-cover rounded border border-accent/30" />
+                        <button type="button" onClick={() => removeNewImage(i)} className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-danger rounded-full flex items-center justify-center"><X size={9} className="text-white" /></button>
+                      </div>
                     ))}
                   </div>
                 )}

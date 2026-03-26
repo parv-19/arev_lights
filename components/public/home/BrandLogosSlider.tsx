@@ -38,12 +38,18 @@ export default function BrandLogosSlider({ brands: propBrands }: { brands?: IBra
           {BRANDS_DOUBLED.map((brand, i) => (
             <div
               key={`${brand.name}-${i}`}
-              className="flex-none w-40 h-16 flex items-center justify-center border border-border/50 bg-primary/50 relative hover:border-accent/50 transition-colors duration-200 group"
+              className="flex-none w-40 h-16 flex items-center justify-center relative group border border-border bg-surface rounded-sm transition-all duration-300 hover:border-accent hover:shadow-[0_0_15px_rgba(201,168,76,0.25)]"
             >
               {brand.logo?.url ? (
-                <Image src={brand.logo.url} alt={brand.name} fill className="object-contain p-4 filter grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300" sizes="160px" />
+                <Image
+                  src={brand.logo.url}
+                  alt={brand.name}
+                  fill
+                  sizes="160px"
+                  className="object-contain p-2 filter grayscale invert opacity-60 mix-blend-screen transition-all duration-300 group-hover:opacity-100 group-hover:sepia-[.8] group-hover:saturate-[5] group-hover:-hue-rotate-15"
+                />
               ) : (
-                <p className="font-label text-sm uppercase tracking-widest text-muted group-hover:text-accent transition-colors duration-200 whitespace-nowrap">
+                <p className="font-display text-lg tracking-widest text-muted group-hover:text-accent group-hover:scale-105 transition-all duration-500 whitespace-nowrap">
                   {brand.name}
                 </p>
               )}
