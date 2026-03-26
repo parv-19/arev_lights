@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Inquiry from "@/models/Inquiry";
+import { requireAdminSession } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   try {
+    const unauthorized = await requireAdminSession();
+    if (unauthorized) return unauthorized;
+
     await dbConnect();
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1");

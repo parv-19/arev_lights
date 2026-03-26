@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import SeoMetadata from "@/models/SeoMetadata";
+import { requireAdminSession } from "@/lib/auth";
 
 const DEFAULT_PAGES = [
   { pageKey: "home", pageLabel: "Home Page", title: "AREV Lights – Premium Lighting Solutions", description: "Discover AREV Lights, your trusted partner for premium architectural and decorative lighting solutions." },
@@ -14,6 +15,9 @@ const DEFAULT_PAGES = [
 
 export async function GET() {
   try {
+    const unauthorized = await requireAdminSession();
+    if (unauthorized) return unauthorized;
+
     await dbConnect();
     const existing = await SeoMetadata.find({});
 
@@ -34,6 +38,9 @@ export async function GET() {
 
 export async function PUT(req: NextRequest) {
   try {
+    const unauthorized = await requireAdminSession();
+    if (unauthorized) return unauthorized;
+
     await dbConnect();
     const body = await req.json();
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Brand from "@/models/Brand";
+import { requireAdminSession } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   try {
@@ -18,6 +19,9 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const unauthorized = await requireAdminSession();
+    if (unauthorized) return unauthorized;
+
     await dbConnect();
     const body = await req.json();
     if (!body.name) return NextResponse.json({ success: false, message: "Name required" }, { status: 400 });

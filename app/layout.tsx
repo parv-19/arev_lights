@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import SessionWrapper from "@/components/shared/SessionWrapper";
+import { getSiteUrl } from "@/lib/env";
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "AREV Lights – Premium Lighting Solutions",
     template: "%s | AREV Lights",
@@ -17,7 +20,12 @@ export const metadata: Metadata = {
     description: "Premium architectural and decorative lighting brand.",
     type: "website",
     locale: "en_IN",
+    url: siteUrl,
+    siteName: "AREV Lights",
     images: ["/logo.png"],
+  },
+  alternates: {
+    canonical: siteUrl,
   },
   icons: {
     icon: "/logo.png",

@@ -5,6 +5,8 @@ import { ExternalLink } from "lucide-react";
 import SectionReveal from "@/components/shared/SectionReveal";
 import InquiryCTASection from "@/components/public/home/InquiryCTASection";
 import { IBrand } from "@/types";
+import dbConnect from "@/lib/db";
+import Brand from "@/models/Brand";
 
 export const metadata: Metadata = {
   title: "Our Brands — AREV Lights",
@@ -24,10 +26,9 @@ const FALLBACK_BRANDS = [
 
 async function getBrands(): Promise<IBrand[]> {
   try {
-    const base = process.env.NEXTAUTH_URL || "http://localhost:3000";
-    const res = await fetch(`${base}/api/brands?activeOnly=true`, { next: { revalidate: 120 } });
-    const data = await res.json();
-    return data.success && data.data.length > 0 ? data.data : [];
+    await dbConnect();
+    const brands = await Brand.find({ isActive: true }).sort({ sortOrder: 1, createdAt: -1 }).lean();
+    return JSON.parse(JSON.stringify(brands));
   } catch { return []; }
 }
 

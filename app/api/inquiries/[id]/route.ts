@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Inquiry from "@/models/Inquiry";
+import { requireAdminSession } from "@/lib/auth";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const unauthorized = await requireAdminSession();
+    if (unauthorized) return unauthorized;
+
     await dbConnect();
     const { id } = await params;
     const inquiry = await Inquiry.findById(id).populate("productRef", "title slug");
@@ -17,6 +21,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const unauthorized = await requireAdminSession();
+    if (unauthorized) return unauthorized;
+
     await dbConnect();
     const { id } = await params;
     const { status } = await req.json();

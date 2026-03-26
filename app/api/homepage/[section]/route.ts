@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import HomepageSection from "@/models/HomepageSection";
+import { requireAdminSession } from "@/lib/auth";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ section: string }> }) {
   try {
@@ -16,6 +17,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ sec
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ section: string }> }) {
   try {
+    const unauthorized = await requireAdminSession();
+    if (unauthorized) return unauthorized;
+
     await dbConnect();
     const { section } = await params;
     const body = await req.json();

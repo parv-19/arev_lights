@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
+import { getAllowedOrigins } from "./lib/env";
 
 const nextConfig: NextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
     remotePatterns: [
       {
@@ -18,7 +16,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
-      allowedOrigins: ["localhost:3000"],
+      allowedOrigins: getAllowedOrigins(),
     },
   },
 };

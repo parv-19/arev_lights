@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/db";
 import SiteSettings from "@/models/SiteSettings";
+import { requireAdminSession } from "@/lib/auth";
 
 export async function GET() {
   try {
@@ -28,6 +29,9 @@ export async function GET() {
 
 export async function PUT(req: NextRequest) {
   try {
+    const unauthorized = await requireAdminSession();
+    if (unauthorized) return unauthorized;
+
     await dbConnect();
     const body = await req.json();
     const settings = await SiteSettings.findOneAndUpdate({}, { $set: body }, { new: true, upsert: true });

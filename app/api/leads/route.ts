@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import mongoose from "mongoose";
+import { requireAdminSession } from "@/lib/auth";
 
 // Inline schema – no separate model file needed for a simple leads store
 const leadSchema = new mongoose.Schema(
@@ -45,6 +46,9 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   try {
+    const unauthorized = await requireAdminSession();
+    if (unauthorized) return unauthorized;
+
     await dbConnect();
     const leads = await Lead.find({}).sort({ createdAt: -1 }).lean();
     return NextResponse.json({ success: true, data: leads });

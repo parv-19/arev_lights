@@ -3,6 +3,7 @@ import dbConnect from "@/lib/db";
 import Product from "@/models/Product";
 import { deleteFromCloudinary } from "@/lib/cloudinary";
 import { IProductImage } from "@/models/Product";
+import { requireAdminSession } from "@/lib/auth";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -28,6 +29,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const unauthorized = await requireAdminSession();
+    if (unauthorized) return unauthorized;
+
     await dbConnect();
     const { id } = await params;
     const body = await req.json();
@@ -42,6 +46,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const unauthorized = await requireAdminSession();
+    if (unauthorized) return unauthorized;
+
     await dbConnect();
     const { id } = await params;
     const product = await Product.findById(id);

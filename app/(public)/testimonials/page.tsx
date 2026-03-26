@@ -3,6 +3,8 @@ import Image from "next/image";
 import SectionReveal from "@/components/shared/SectionReveal";
 import { ITestimonial } from "@/types";
 import { Star } from "lucide-react";
+import dbConnect from "@/lib/db";
+import Testimonial from "@/models/Testimonial";
 
 export const metadata: Metadata = {
   title: "Client Testimonials — AREV Lights",
@@ -20,10 +22,9 @@ const FALLBACK: ITestimonial[] = [
 
 async function getTestimonials(): Promise<ITestimonial[]> {
   try {
-    const base = process.env.NEXTAUTH_URL || "http://localhost:3000";
-    const res = await fetch(`${base}/api/testimonials?visible=true`, { next: { revalidate: 120 } });
-    const data = await res.json();
-    return data.success && data.data.length > 0 ? data.data : [];
+    await dbConnect();
+    const testimonials = await Testimonial.find({ isVisible: true }).sort({ sortOrder: 1 }).lean();
+    return JSON.parse(JSON.stringify(testimonials));
   } catch { return []; }
 }
 

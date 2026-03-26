@@ -14,6 +14,7 @@ import Testimonial from "@/models/Testimonial";
 import Brochure from "@/models/Brochure";
 import Glimpse from "@/models/Glimpse";
 import SiteSettings from "@/models/SiteSettings";
+import HomepageSection from "@/models/HomepageSection";
 
 export const metadata: Metadata = {
   title: "AREV Lights – Premium Lighting Solutions",
@@ -23,12 +24,9 @@ export const metadata: Metadata = {
 
 async function getHomepageData() {
   try {
-    const base = process.env.NEXTAUTH_URL || "http://localhost:3000";
-    // Using no-store for immediate reflection of changes
-    const res = await fetch(`${base}/api/homepage`, { cache: 'no-store' });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return data.success ? data.data : [];
+    await dbConnect();
+    const sections = await HomepageSection.find({}).sort({ sectionKey: 1 }).lean();
+    return JSON.parse(JSON.stringify(sections));
   } catch {
     return [];
   }
