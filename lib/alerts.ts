@@ -6,7 +6,7 @@ type AlertPayload = {
 };
 
 function getAlertRecipient() {
-  return process.env.ALERT_EMAIL_TO || "somani.parv2005@gmail.com";
+  return process.env.ALERT_EMAIL_TO || "somaniparv2005@gmail.com";
 }
 
 export async function sendProductionAlert(payload: AlertPayload) {
