@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { applyStringSanitization } from "@/lib/mongoose-sanitize";
 
 export interface ITestimonial extends Document {
   clientName: string;
@@ -29,6 +30,8 @@ const TestimonialSchema = new Schema<ITestimonial>(
   },
   { timestamps: true }
 );
+
+applyStringSanitization(TestimonialSchema);
 
 export default mongoose.models.Testimonial ||
   mongoose.model<ITestimonial>("Testimonial", TestimonialSchema);

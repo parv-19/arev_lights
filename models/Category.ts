@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { applyStringSanitization } from "@/lib/mongoose-sanitize";
 
 export interface ICategory extends Document {
   name: string;
@@ -29,6 +30,8 @@ const CategorySchema = new Schema<ICategory>(
   },
   { timestamps: true }
 );
+
+applyStringSanitization(CategorySchema);
 
 export default mongoose.models.Category ||
   mongoose.model<ICategory>("Category", CategorySchema);

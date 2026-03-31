@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { applyStringSanitization } from "@/lib/mongoose-sanitize";
 
 export type SectionKey =
   | "hero_banners"
@@ -43,6 +44,8 @@ const HomepageSectionSchema = new Schema<IHomepageSection>(
   },
   { timestamps: true }
 );
+
+applyStringSanitization(HomepageSectionSchema);
 
 export default mongoose.models.HomepageSection ||
   mongoose.model<IHomepageSection>("HomepageSection", HomepageSectionSchema);

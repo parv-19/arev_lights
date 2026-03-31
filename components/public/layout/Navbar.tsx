@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getSafeEmailHref, getSafeTelHref } from "@/lib/safe-url";
 import { ISiteSettings } from "@/types";
 
 const navLinks = [
@@ -41,15 +42,15 @@ export default function Navbar({ settings }: { settings?: ISiteSettings | null }
             Premium Lighting Solutions — Since 2025
           </p>
           <div className="flex items-center gap-6 text-xs text-muted">
-            <a href="tel:+919274776616" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href={getSafeTelHref("+919274776616")} className="flex items-center gap-1.5 hover:text-accent transition-colors">
               <Phone size={11} />
               +91 92747 76616
             </a>
             <span className="text-border">|</span>
-            <a href="tel:+919824076616" className="flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href={getSafeTelHref("+919824076616")} className="flex items-center gap-1.5 hover:text-accent transition-colors">
               +91 98240 76616
             </a>
-            <a href={`mailto:${settings?.emails?.[0] || "arev.lights@gmail.com"}`} className="flex items-center gap-1.5 hover:text-accent transition-colors">
+            <a href={getSafeEmailHref(settings?.emails?.[0])} className="flex items-center gap-1.5 hover:text-accent transition-colors">
               <Mail size={11} />
               {settings?.emails?.[0] || "arev.lights@gmail.com"}
             </a>

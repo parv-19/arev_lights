@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { applyStringSanitization } from "@/lib/mongoose-sanitize";
 
 export interface ISiteSettings extends Document {
   address: string;
@@ -41,6 +42,8 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
   },
   { timestamps: true }
 );
+
+applyStringSanitization(SiteSettingsSchema);
 
 export default mongoose.models.SiteSettings ||
   mongoose.model<ISiteSettings>("SiteSettings", SiteSettingsSchema);

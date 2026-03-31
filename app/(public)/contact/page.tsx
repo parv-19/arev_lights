@@ -9,6 +9,7 @@ import { MapPin, Phone, Mail, Clock, MessageCircle, Send } from "lucide-react";
 import SectionReveal from "@/components/shared/SectionReveal";
 import { ISiteSettings } from "@/types";
 import { buildWhatsAppLink } from "@/lib/utils";
+import { getSafeEmailHref, getSafeEmbedSrc, getSafeTelHref } from "@/lib/safe-url";
 
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -151,7 +152,7 @@ export default function ContactPage() {
                       <div>
                         <p className="admin-label mb-1">Phone</p>
                         {phones.map(ph => (
-                          <a key={ph} href={`tel:${ph}`} className="block text-neutral text-sm hover:text-accent transition-colors">
+                          <a key={ph} href={getSafeTelHref(ph)} className="block text-neutral text-sm hover:text-accent transition-colors">
                             {ph}
                           </a>
                         ))}
@@ -165,7 +166,7 @@ export default function ContactPage() {
                       <div>
                         <p className="admin-label mb-1">Email</p>
                         {emails.map(em => (
-                          <a key={em} href={`mailto:${em}`} className="block text-neutral text-sm hover:text-accent transition-colors">
+                          <a key={em} href={getSafeEmailHref(em)} className="block text-neutral text-sm hover:text-accent transition-colors">
                             {em}
                           </a>
                         ))}
@@ -200,10 +201,10 @@ export default function ContactPage() {
                 </a>
 
                 {/* Map Embed */}
-                {settings?.mapEmbedUrl && (
+                {getSafeEmbedSrc(settings?.mapEmbedUrl) && (
                   <div className="relative h-52 rounded-sm overflow-hidden border border-border">
                     <iframe
-                      src={settings.mapEmbedUrl}
+                      src={getSafeEmbedSrc(settings?.mapEmbedUrl) ?? undefined}
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}

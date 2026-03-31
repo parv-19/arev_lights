@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { applyStringSanitization } from "@/lib/mongoose-sanitize";
 
 export interface IGlimpse extends Document {
   title: string;
@@ -25,6 +26,8 @@ const GlimpseSchema = new Schema<IGlimpse>(
   },
   { timestamps: true }
 );
+
+applyStringSanitization(GlimpseSchema);
 
 export default mongoose.models.Glimpse ||
   mongoose.model<IGlimpse>("Glimpse", GlimpseSchema);

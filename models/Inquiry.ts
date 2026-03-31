@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { applyStringSanitization } from "@/lib/mongoose-sanitize";
 
 export type InquiryType = "general" | "dealer" | "product";
 export type InquiryStatus = "new" | "contacted" | "converted";
@@ -40,6 +41,7 @@ const InquirySchema = new Schema<IInquiry>(
 InquirySchema.index({ status: 1 });
 InquirySchema.index({ type: 1 });
 InquirySchema.index({ createdAt: -1 });
+applyStringSanitization(InquirySchema);
 
 export default mongoose.models.Inquiry ||
   mongoose.model<IInquiry>("Inquiry", InquirySchema);

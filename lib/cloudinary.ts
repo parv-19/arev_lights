@@ -1,5 +1,17 @@
 import { v2 as cloudinary } from "cloudinary";
 
+const REQUIRED_ENV_VARS = [
+  "CLOUDINARY_CLOUD_NAME",
+  "CLOUDINARY_API_KEY",
+  "CLOUDINARY_API_SECRET",
+] as const;
+
+for (const key of REQUIRED_ENV_VARS) {
+  if (!process.env[key]) {
+    throw new Error(`Missing required Cloudinary environment variable: ${key}`);
+  }
+}
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -26,9 +38,14 @@ export async function uploadToCloudinary(
   folder = "arev-lights",
   resourceType: "image" | "video" | "raw" | "auto" = "image"
 ): Promise<{ url: string; publicId: string }> {
+  if (!folder.startsWith("arev-lights")) {
+    throw new Error("Invalid Cloudinary folder");
+  }
+
   const result = await cloudinary.uploader.upload(file, {
     folder,
     resource_type: resourceType,
+    overwrite: false,
   });
   return { url: result.secure_url, publicId: result.public_id };
 }

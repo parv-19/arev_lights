@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { applyStringSanitization } from "@/lib/mongoose-sanitize";
 
 export interface ISpec {
   key: string;
@@ -67,6 +68,7 @@ const ProductSchema = new Schema<IProduct>(
 ProductSchema.index({ category: 1 });
 ProductSchema.index({ isFeatured: 1 });
 ProductSchema.index({ title: "text", tags: "text" });
+applyStringSanitization(ProductSchema);
 
 export default mongoose.models.Product ||
   mongoose.model<IProduct>("Product", ProductSchema);

@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { applyStringSanitization } from "@/lib/mongoose-sanitize";
 
 export interface IProject extends Document {
   title: string;
@@ -31,6 +32,8 @@ const ProjectSchema = new Schema<IProject>(
   },
   { timestamps: true }
 );
+
+applyStringSanitization(ProjectSchema);
 
 export default mongoose.models.Project ||
   mongoose.model<IProject>("Project", ProjectSchema);

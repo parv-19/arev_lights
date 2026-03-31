@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { applyStringSanitization } from "@/lib/mongoose-sanitize";
 
 export interface IBrochure extends Document {
   title: string;
@@ -27,6 +28,8 @@ const BrochureSchema = new Schema<IBrochure>(
   },
   { timestamps: true }
 );
+
+applyStringSanitization(BrochureSchema);
 
 export default mongoose.models.Brochure ||
   mongoose.model<IBrochure>("Brochure", BrochureSchema);

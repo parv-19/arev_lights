@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Instagram, Facebook, Linkedin, Youtube, Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
+import { getSafeEmailHref, getSafeExternalHref, getSafeTelHref } from "@/lib/safe-url";
 import { ISiteSettings } from "@/types";
 
 const footerLinks = {
@@ -75,8 +76,10 @@ export default function Footer({ settings }: { settings?: ISiteSettings | null }
               ].map(({ Icon, href, label }) => (
                 <a
                   key={label}
-                  href={href}
+                  href={getSafeExternalHref(href)}
                   aria-label={label}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center border border-border rounded-sm text-muted hover:text-accent hover:border-accent transition-all duration-200"
                 >
                   <Icon size={15} />
@@ -113,16 +116,16 @@ export default function Footer({ settings }: { settings?: ISiteSettings | null }
             <p className="text-muted text-sm whitespace-pre-line">{settings?.address || "AREV Lights, India"}</p>
           </div>
           <div className="flex flex-col gap-2">
-            <a href="tel:+919274776616" className="flex items-center gap-2 text-muted text-sm hover:text-accent transition-colors min-h-[36px]">
+            <a href={getSafeTelHref("+919274776616")} className="flex items-center gap-2 text-muted text-sm hover:text-accent transition-colors min-h-[36px]">
               <Phone size={14} className="text-accent flex-shrink-0" /> +91 92747 76616
             </a>
-            <a href="tel:+919824076616" className="flex items-center gap-2 text-muted text-sm hover:text-accent transition-colors min-h-[36px]">
+            <a href={getSafeTelHref("+919824076616")} className="flex items-center gap-2 text-muted text-sm hover:text-accent transition-colors min-h-[36px]">
               <Phone size={14} className="text-muted flex-shrink-0" /> +91 98240 76616
             </a>
           </div>
           <div className="flex items-center gap-3">
             <Mail size={16} className="text-accent flex-shrink-0" />
-            <a href={`mailto:${settings?.emails?.[0] || "arev.lights@gmail.com"}`} className="text-muted text-sm hover:text-accent transition-colors break-all">
+            <a href={getSafeEmailHref(settings?.emails?.[0])} className="text-muted text-sm hover:text-accent transition-colors break-all">
               {settings?.emails?.[0] || "arev.lights@gmail.com"}
             </a>
           </div>

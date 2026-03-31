@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { applyStringSanitization } from "@/lib/mongoose-sanitize";
 
 export interface ISeoMetadata extends Document {
   pageKey: string;
@@ -24,6 +25,8 @@ const SeoMetadataSchema = new Schema<ISeoMetadata>(
   },
   { timestamps: true }
 );
+
+applyStringSanitization(SeoMetadataSchema);
 
 export default mongoose.models.SeoMetadata ||
   mongoose.model<ISeoMetadata>("SeoMetadata", SeoMetadataSchema);

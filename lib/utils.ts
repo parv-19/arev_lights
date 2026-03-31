@@ -1,3 +1,5 @@
+import { getSafeExternalHref } from "@/lib/safe-url";
+
 /**
  * Generate a URL-friendly slug from a string.
  */
@@ -48,7 +50,7 @@ export function getPrimaryImage(
 export function buildWhatsAppLink(phone: string, message: string): string {
   const encoded = encodeURIComponent(message);
   const clean = phone.replace(/\D/g, "");
-  return `https://wa.me/${clean}?text=${encoded}`;
+  return getSafeExternalHref(`https://wa.me/${clean}?text=${encoded}`, "https://wa.me/919274776616");
 }
 
 /**

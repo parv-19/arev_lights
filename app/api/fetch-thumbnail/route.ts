@@ -1,21 +1,43 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdminSession } from "@/lib/auth";
+import { enforceContentLength, sanitizeString } from "@/lib/security";
+
+const ALLOWED_THUMBNAIL_HOSTS = new Set([
+  "www.youtube.com",
+  "youtube.com",
+  "youtu.be",
+  "www.instagram.com",
+  "instagram.com",
+  "www.facebook.com",
+  "facebook.com",
+  "vimeo.com",
+  "www.vimeo.com",
+]);
 
 export async function POST(req: NextRequest) {
   try {
     const unauthorized = await requireAdminSession();
     if (unauthorized) return unauthorized;
 
+    const oversized = enforceContentLength(req);
+    if (oversized) return oversized;
+
     const { url } = await req.json();
     if (!url) return NextResponse.json({ success: false, message: "URL is required" }, { status: 400 });
 
+    const sanitizedUrl = sanitizeString(url);
+    const parsedUrl = new URL(sanitizedUrl);
+    if (!["http:", "https:"].includes(parsedUrl.protocol) || !ALLOWED_THUMBNAIL_HOSTS.has(parsedUrl.hostname)) {
+      return NextResponse.json({ success: false, message: "Unsupported video URL" }, { status: 400 });
+    }
+
     // Handle YouTube specially to avoid scraping
-    const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    const ytMatch = sanitizedUrl.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
     if (ytMatch && ytMatch[1]) {
       return NextResponse.json({ success: true, url: `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg` });
     }
 
-    const response = await fetch(url, {
+    const response = await fetch(parsedUrl.toString(), {
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
         "Accept": "text/html",

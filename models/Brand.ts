@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
+import { applyStringSanitization } from "@/lib/mongoose-sanitize";
 
 export interface IBrand extends Document {
   name: string;
@@ -23,6 +24,8 @@ const BrandSchema = new Schema<IBrand>(
   },
   { timestamps: true }
 );
+
+applyStringSanitization(BrandSchema);
 
 export default mongoose.models.Brand ||
   mongoose.model<IBrand>("Brand", BrandSchema);

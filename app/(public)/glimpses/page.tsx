@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import SectionReveal from "@/components/shared/SectionReveal";
 import { Play, ExternalLink } from "lucide-react";
+import { getSafeEmbedSrc, getSafeExternalHref } from "@/lib/safe-url";
 
 interface IGlimpse {
   _id: string;
@@ -70,7 +71,7 @@ export default function GlimpsesPage() {
                     <div className="relative aspect-video bg-surface-2 overflow-hidden">
                       {g.thumbnail?.url ? (
                         <a
-                          href={g.videoUrl}
+                          href={getSafeExternalHref(g.videoUrl)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="relative group block w-full h-full"
@@ -85,7 +86,7 @@ export default function GlimpsesPage() {
                         </a>
                       ) : isYouTube(g.videoUrl) ? (
                         <iframe
-                          src={getEmbedUrl(g.videoUrl)}
+                          src={getSafeEmbedSrc(getEmbedUrl(g.videoUrl)) ?? undefined}
                           title={g.title}
                           className="w-full h-full"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -93,7 +94,7 @@ export default function GlimpsesPage() {
                         />
                       ) : isInstagram(g.videoUrl) ? (
                         <a
-                          href={g.videoUrl}
+                          href={getSafeExternalHref(g.videoUrl)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex flex-col items-center justify-center h-full gap-3 bg-gradient-to-br from-[#833ab4]/20 via-[#fd1d1d]/20 to-[#fcb045]/20 hover:from-[#833ab4]/30 hover:to-[#fcb045]/30 transition-all group"
@@ -104,7 +105,7 @@ export default function GlimpsesPage() {
                           <span className="text-muted text-xs flex items-center gap-1">Watch Instagram Reel <ExternalLink size={10} /></span>
                         </a>
                       ) : (
-                        <video src={g.videoUrl} controls className="w-full h-full object-cover" />
+                        <video src={getSafeExternalHref(g.videoUrl, "")} controls className="w-full h-full object-cover" />
                       )}
                     </div>
                     <div className="p-4">

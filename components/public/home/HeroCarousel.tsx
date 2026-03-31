@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { getSafeHref } from "@/lib/safe-url";
 
 interface HeroBanner {
   _id?: string;
@@ -66,6 +67,8 @@ export default function HeroCarousel({ banners: propBanners }: { banners?: HeroB
   }, [isPaused, next]);
 
   const banner = banners[current];
+  const primaryHref = getSafeHref(banner.ctaHref, "/products");
+  const secondaryHref = getSafeHref(banner.secondaryCtaHref, "/contact");
 
   return (
     <div
@@ -152,12 +155,12 @@ export default function HeroCarousel({ banners: propBanners }: { banners?: HeroB
                 className="flex flex-wrap gap-4"
               >
                 {banner.ctaHref && (
-                  <Link href={banner.ctaHref} className="btn-gold">
+                  <Link href={primaryHref} className="btn-gold">
                     {banner.ctaLabel || "Explore"} <ArrowRight size={16} />
                   </Link>
                 )}
                 {banner.secondaryCtaHref && (
-                  <Link href={banner.secondaryCtaHref} className="btn-outline-gold">
+                  <Link href={secondaryHref} className="btn-outline-gold">
                     {banner.secondaryCtaLabel}
                   </Link>
                 )}
