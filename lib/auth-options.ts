@@ -47,6 +47,11 @@ export const authOptions: NextAuthOptions = {
           email: rawEmail.trim().toLowerCase() || null,
           hasNextAuthSecret: Boolean(process.env.NEXTAUTH_SECRET),
           hasMongoUri: Boolean(process.env.MONGODB_URI),
+          nextAuthUrl: process.env.NEXTAUTH_URL || null,
+          vercelUrl: process.env.VERCEL_URL || null,
+          host: headers?.get("host") || null,
+          origin: headers?.get("origin") || null,
+          referer: headers?.get("referer") || null,
           ip,
           userAgent,
         });
@@ -147,6 +152,11 @@ export const authOptions: NextAuthOptions = {
         );
         resetAdminLoginFailures(ip);
         logAdminAuthEvent("successful_login", { email, ip, userAgent, role: user.role });
+        logPreviewAuthDebug("authorize_success", {
+          email,
+          userId: String(user._id),
+          role: user.role,
+        });
 
         return {
           id: String(user._id),
@@ -201,6 +211,12 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = (user as { role?: string }).role ?? "admin";
+        logPreviewAuthDebug("jwt_callback", {
+          tokenEmail: token.email || null,
+          tokenId: token.id || null,
+          tokenRole: token.role || null,
+          userEmail: (user as { email?: string }).email || null,
+        });
       }
       return token;
     },
@@ -209,7 +225,19 @@ export const authOptions: NextAuthOptions = {
         (session.user as { id?: string; role?: string }).id = token.id as string;
         (session.user as { id?: string; role?: string }).role = token.role as string;
       }
+      logPreviewAuthDebug("session_callback", {
+        sessionEmail: session.user?.email || null,
+        sessionUserId: (session.user as { id?: string })?.id || null,
+        sessionRole: (session.user as { role?: string })?.role || null,
+      });
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      logPreviewAuthDebug("redirect_callback", {
+        url,
+        baseUrl,
+      });
+      return url.startsWith("/") ? `${baseUrl}${url}` : url;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
