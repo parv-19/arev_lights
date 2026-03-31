@@ -6,6 +6,7 @@ import { ISiteSettings } from "@/types";
 
 const footerLinks = {
   Explore: [
+    { label: "Blog", href: "/blog" },
     { label: "Brochures", href: "/brochures" },
     { label: "Brands", href: "/brands" },
     { label: "Project Glimpses", href: "/glimpses" },

@@ -11,6 +11,7 @@ import { ISiteSettings } from "@/types";
 
 const navLinks = [
   { label: "Home", href: "/" },
+  { label: "Blog", href: "/blog" },
   { label: "Brochures", href: "/brochures" },
   // { label: "Projects", href: "/projects" }, // Commented out for now
   { label: "Brands", href: "/brands" },

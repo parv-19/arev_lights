@@ -19,6 +19,7 @@ const NAV_ITEMS = [
   { label: "Glimpses", href: "/admin/glimpses", icon: Video },
   { label: "Testimonials", href: "/admin/testimonials", icon: Star },
   { label: "Brands", href: "/admin/brands", icon: Globe },
+  { label: "Blog", href: "/admin/blog", icon: FileText },
   { label: "Inquiries", href: "/admin/inquiries", icon: Inbox },
   { label: "Leads", href: "/admin/leads", icon: UserCheck },
   { label: "Settings", href: "/admin/settings", icon: Settings },

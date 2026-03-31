@@ -2,30 +2,30 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import SessionWrapper from "@/components/shared/SessionWrapper";
+import StructuredData from "@/components/shared/StructuredData";
 import { getSiteUrl } from "@/lib/env";
+import { buildMetadata, getGlobalSchemas } from "@/lib/seo";
 
 const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
+  ...buildMetadata({
+    title: "AREV Lights Ahmedabad | Premium Decorative and Smart Lighting",
+    description:
+      "AREV Lights Ahmedabad offers premium decorative lights, designer fans, smart lighting solutions, and curated fixtures for elegant residential and commercial spaces.",
+    path: "/",
+    keywords: [
+      "AREV Lights Ahmedabad",
+      "lighting store Ahmedabad",
+      "decorative lights Ahmedabad",
+      "smart lighting Ahmedabad",
+      "designer fans Ahmedabad",
+    ],
+  }),
   metadataBase: new URL(siteUrl),
   title: {
-    default: "AREV Lights – Premium Lighting Solutions",
+    default: "AREV Lights Ahmedabad | Premium Decorative and Smart Lighting",
     template: "%s | AREV Lights",
-  },
-  description:
-    "Discover AREV Lights – your trusted partner for premium architectural and decorative lighting solutions across India.",
-  keywords: ["AREV Lights", "premium lighting", "architectural lighting", "decorative lights", "LED lighting India"],
-  openGraph: {
-    title: "AREV Lights – Premium Lighting Solutions",
-    description: "Premium architectural and decorative lighting brand.",
-    type: "website",
-    locale: "en_IN",
-    url: siteUrl,
-    siteName: "AREV Lights",
-    images: ["/logo.png"],
-  },
-  alternates: {
-    canonical: siteUrl,
   },
   icons: {
     icon: "/logo.png",
@@ -37,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <StructuredData data={getGlobalSchemas()} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

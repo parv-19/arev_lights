@@ -141,6 +141,23 @@ export interface ISeoMetadata {
   canonical?: string;
 }
 
+export interface IBlogPost {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  coverImage?: CloudinaryMedia;
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords: string[];
+  author: string;
+  tags: string[];
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface PaginationInfo {
   page: number;
   limit: number;
