@@ -18,20 +18,31 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
+    const callbackUrl =
+      typeof window !== "undefined"
+        ? new URLSearchParams(window.location.search).get("callbackUrl")
+        : null;
+    const safeCallbackUrl =
+      callbackUrl && callbackUrl.startsWith("/admin") ? callbackUrl : "/admin";
 
     const res = await signIn("credentials", {
       email,
       password,
+      callbackUrl: safeCallbackUrl,
       redirect: false,
     });
 
     setLoading(false);
 
     if (res?.error) {
-      setError("Invalid email or password. Please try again.");
+      setError(
+        res.status === 429
+          ? "Too many login attempts. Please wait a little and try again."
+          : "Invalid email or password. Please try again."
+      );
     } else {
       toast.success("Welcome back!");
-      router.push("/admin");
+      router.push(safeCallbackUrl);
       router.refresh();
     }
   };

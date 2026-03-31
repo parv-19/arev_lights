@@ -9,5 +9,10 @@ export async function requireAdminSession() {
     return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
   }
 
+  const role = (session.user as { role?: string }).role;
+  if (!role || !["admin", "editor"].includes(role)) {
+    return NextResponse.json({ success: false, message: "Forbidden" }, { status: 403 });
+  }
+
   return null;
 }

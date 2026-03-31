@@ -1,5 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+import { getAdminLoginRateLimitResponse, getRequestIpFromHeaders, logAdminAuthEvent } from "./lib/admin-auth-security";
 import { getAllowedOrigins } from "./lib/env";
 import { assertSafeQueryParams } from "./lib/security";
 
@@ -27,6 +28,15 @@ function applySecurityHeaders(req: NextRequest, res: NextResponse) {
 }
 
 export async function middleware(req: NextRequest) {
+  if (req.nextUrl.pathname === "/api/auth/callback/credentials" && req.method === "POST") {
+    const ip = getRequestIpFromHeaders(req.headers);
+    const rateLimited = getAdminLoginRateLimitResponse(ip);
+    if (rateLimited) {
+      logAdminAuthEvent("rate_limit_hit", { ip, path: req.nextUrl.pathname });
+      return applySecurityHeaders(req, rateLimited);
+    }
+  }
+
   if (req.method === "OPTIONS" && req.nextUrl.pathname.startsWith("/api/")) {
     const origin = req.headers.get("origin");
     if (origin && !allowedOrigins.has(origin)) {
@@ -55,10 +65,18 @@ export async function middleware(req: NextRequest) {
 
   // Protect all other /admin routes
   if (pathname.startsWith("/admin")) {
+    const role = typeof token?.role === "string" ? token.role : "";
     if (!token) {
       const loginUrl = new URL("/admin/login", req.url);
       loginUrl.searchParams.set("callbackUrl", pathname);
       return applySecurityHeaders(req, NextResponse.redirect(loginUrl));
+    }
+
+    if (!["admin", "editor"].includes(role)) {
+      return applySecurityHeaders(
+        req,
+        NextResponse.redirect(new URL("/admin/login", req.url))
+      );
     }
   }
 
