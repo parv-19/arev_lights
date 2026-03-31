@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { JWT } from "next-auth/jwt";
 import { z } from "zod";
+import mongoose from "mongoose";
 import dbConnect from "@/lib/db";
 import AdminUser from "@/models/AdminUser";
 import {
@@ -23,6 +24,10 @@ const loginSchema = z.object({
 const INVALID_CREDENTIALS_ERROR = "Invalid credentials";
 const DUMMY_PASSWORD_HASH = "$2a$10$Q7Yl8YjR5sJ7y0nD1wD6..tW3iZ6Qx1rX1m7V8dR3nHj4Zk2L0T4O";
 
+function logPreviewAuthDebug(event: string, details: Record<string, unknown>) {
+  console.info(`[AUTH_DEBUG] ${event}`, details);
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -36,9 +41,22 @@ export const authOptions: NextAuthOptions = {
         const ip = getRequestIpFromHeaders(headers);
         const userAgent = getRequestUserAgent(headers);
         const blocked = checkAdminLoginRateLimit(ip);
+        const rawEmail = typeof credentials?.email === "string" ? credentials.email : "";
+
+        logPreviewAuthDebug("authorize_start", {
+          email: rawEmail.trim().toLowerCase() || null,
+          hasNextAuthSecret: Boolean(process.env.NEXTAUTH_SECRET),
+          hasMongoUri: Boolean(process.env.MONGODB_URI),
+          ip,
+          userAgent,
+        });
 
         if (blocked) {
           logAdminAuthEvent("rate_limit_hit", { ip, userAgent });
+          logPreviewAuthDebug("rate_limit_blocked", {
+            email: rawEmail.trim().toLowerCase() || null,
+            ip,
+          });
           throw new Error("Too many login attempts. Please try again later.");
         }
 
@@ -46,6 +64,10 @@ export const authOptions: NextAuthOptions = {
         if (!parsed.success) {
           recordAdminLoginFailure(ip);
           logAdminAuthEvent("failed_login_validation", { ip, userAgent });
+          logPreviewAuthDebug("validation_failed", {
+            email: rawEmail.trim().toLowerCase() || null,
+            ip,
+          });
           throw new Error(INVALID_CREDENTIALS_ERROR);
         }
 
@@ -53,8 +75,19 @@ export const authOptions: NextAuthOptions = {
         const password = parsed.data.password;
 
         await dbConnect();
+        logPreviewAuthDebug("db_connected", {
+          email,
+          dbName: mongoose.connection.name || null,
+          readyState: mongoose.connection.readyState,
+        });
+
         const user = await AdminUser.findOne({ email })
           .select("+passwordHash failedLoginAttempts lockUntil lastFailedLoginAt");
+
+        logPreviewAuthDebug("user_lookup", {
+          email,
+          userFound: Boolean(user),
+        });
 
         if (!user) {
           await bcrypt.compare(password, DUMMY_PASSWORD_HASH);
@@ -71,6 +104,12 @@ export const authOptions: NextAuthOptions = {
         }
 
         const isValid = await bcrypt.compare(password, user.passwordHash);
+        logPreviewAuthDebug("password_compare", {
+          email,
+          userFound: true,
+          passwordMatch: isValid,
+        });
+
         if (!isValid) {
           const failedLoginAttempts = (user.failedLoginAttempts ?? 0) + 1;
           const lockAccount = failedLoginAttempts >= adminAuthPolicy.maxFailedAttempts;
