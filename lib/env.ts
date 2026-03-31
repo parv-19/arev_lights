@@ -19,6 +19,7 @@ export function getSiteUrl() {
   return (
     normalizeUrl(process.env.NEXTAUTH_URL) ??
     normalizeUrl(process.env.NEXT_PUBLIC_SITE_URL) ??
+    normalizeUrl(process.env.VERCEL_URL) ??
     normalizeUrl(process.env.VERCEL_PROJECT_PRODUCTION_URL) ??
     FALLBACK_SITE_URL
   );
@@ -30,6 +31,7 @@ export function getAllowedOrigins() {
   for (const value of [
     process.env.NEXTAUTH_URL,
     process.env.NEXT_PUBLIC_SITE_URL,
+    process.env.VERCEL_URL,
     process.env.VERCEL_PROJECT_PRODUCTION_URL,
   ]) {
     const normalized = normalizeUrl(value);
@@ -37,4 +39,22 @@ export function getAllowedOrigins() {
   }
 
   return Array.from(originSet);
+}
+
+export function isAllowedOrigin(origin: string | null) {
+  if (!origin) return false;
+
+  const normalizedOrigin = normalizeUrl(origin);
+  if (!normalizedOrigin) return false;
+
+  if (getAllowedOrigins().includes(normalizedOrigin)) {
+    return true;
+  }
+
+  try {
+    const parsedOrigin = new URL(normalizedOrigin);
+    return parsedOrigin.protocol === "https:" && parsedOrigin.hostname.endsWith(".vercel.app");
+  } catch {
+    return false;
+  }
 }

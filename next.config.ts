@@ -39,9 +39,6 @@ const nextConfig: NextConfig = {
     serverActions: {
       allowedOrigins: getAllowedOrigins(),
     },
-    sri: {
-      algorithm: "sha256",
-    },
   },
   async headers() {
     return [
