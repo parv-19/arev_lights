@@ -1,16 +1,15 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminLoginRateLimitResponse, getRequestIpFromHeaders, logAdminAuthEvent } from "./lib/admin-auth-security";
-import { getAllowedOrigins } from "./lib/env";
+import { isAllowedOrigin } from "./lib/env";
 import { assertSafeQueryParams } from "./lib/security";
 
-const allowedOrigins = new Set(getAllowedOrigins());
 
 function applySecurityHeaders(req: NextRequest, res: NextResponse) {
   const origin = req.headers.get("origin");
   const pathname = req.nextUrl.pathname;
 
-  if (origin && allowedOrigins.has(origin) && pathname.startsWith("/api/")) {
+  if (origin && isAllowedOrigin(origin) && pathname.startsWith("/api/")) {
     res.headers.set("Access-Control-Allow-Origin", origin);
     res.headers.set("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
     res.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
@@ -39,7 +38,7 @@ export async function middleware(req: NextRequest) {
 
   if (req.method === "OPTIONS" && req.nextUrl.pathname.startsWith("/api/")) {
     const origin = req.headers.get("origin");
-    if (origin && !allowedOrigins.has(origin)) {
+    if (origin && !isAllowedOrigin(origin)) {
       return NextResponse.json({ success: false, message: "Origin not allowed" }, { status: 403 });
     }
 
@@ -50,7 +49,7 @@ export async function middleware(req: NextRequest) {
   if (unsafeQuery) return applySecurityHeaders(req, unsafeQuery);
 
   const origin = req.headers.get("origin");
-  if (origin && req.nextUrl.pathname.startsWith("/api/") && !allowedOrigins.has(origin)) {
+  if (origin && req.nextUrl.pathname.startsWith("/api/") && !isAllowedOrigin(origin)) {
     return applySecurityHeaders(
       req,
       NextResponse.json({ success: false, message: "Origin not allowed" }, { status: 403 })
@@ -86,3 +85,6 @@ export async function middleware(req: NextRequest) {
 export const config = {
   matcher: ["/admin/:path*", "/api/:path*"],
 };
+
+
+
