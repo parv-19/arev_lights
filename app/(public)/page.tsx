@@ -16,6 +16,8 @@ import Glimpse from "@/models/Glimpse";
 import SiteSettings from "@/models/SiteSettings";
 import HomepageSection from "@/models/HomepageSection";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "AREV Lights – Premium Lighting Solutions",
   description:
