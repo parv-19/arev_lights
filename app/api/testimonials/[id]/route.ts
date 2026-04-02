@@ -3,6 +3,7 @@ import dbConnect from "@/lib/db";
 import Testimonial from "@/models/Testimonial";
 import { requireAdminSession } from "@/lib/auth";
 import { deleteFromCloudinary } from "@/lib/cloudinary";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -14,6 +15,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const body = await req.json();
     const t = await Testimonial.findByIdAndUpdate(id, body, { new: true });
     if (!t) return NextResponse.json({ success: false, message: "Not found" }, { status: 404 });
+    revalidatePath("/");
     return NextResponse.json({ success: true, data: t });
   } catch (error) {
     console.error("[TESTIMONIAL_PUT]", error);
@@ -32,6 +34,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     if (!t) return NextResponse.json({ success: false, message: "Not found" }, { status: 404 });
     if (t.image?.publicId) await deleteFromCloudinary(t.image.publicId);
     await Testimonial.findByIdAndDelete(id);
+    revalidatePath("/");
     return NextResponse.json({ success: true, message: "Deleted" });
   } catch (error) {
     console.error("[TESTIMONIAL_DELETE]", error);

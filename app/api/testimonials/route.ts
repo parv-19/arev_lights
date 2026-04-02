@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Testimonial from "@/models/Testimonial";
 import { requireAdminSession } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 export async function GET(req: NextRequest) {
   try {
@@ -28,6 +29,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, message: "Name and review required" }, { status: 400 });
     }
     const testimonial = await Testimonial.create(body);
+    revalidatePath("/");
     return NextResponse.json({ success: true, data: testimonial }, { status: 201 });
   } catch (error) {
     console.error("[TESTIMONIALS_POST]", error);

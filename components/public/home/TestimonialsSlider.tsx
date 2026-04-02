@@ -5,38 +5,18 @@ import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import Image from "next/image";
 import SectionReveal from "@/components/shared/SectionReveal";
 
-const TESTIMONIALS = [
-  {
-    _id: "1",
-    clientName: "Rajesh Mehta",
-    designation: "Principal Architect",
-    company: "Studio RM Architects",
-    reviewText: "AREV Lights has consistently delivered premium quality products that elevate every interior we design. Their technical support and range of products is unmatched.",
-    rating: 5,
-  },
-  {
-    _id: "2",
-    clientName: "Priya Sharma",
-    designation: "Interior Designer",
-    company: "Sharma Interiors",
-    reviewText: "The quality and variety of lighting solutions from AREV is exceptional. They understand the designer's vision and provide products that truly bring spaces to life.",
-    rating: 5,
-  },
-  {
-    _id: "3",
-    clientName: "Anand Patel",
-    designation: "Project Manager",
-    company: "Patel Builders Pvt. Ltd.",
-    reviewText: "Reliable products, on-time delivery, and a team that goes above and beyond. AREV Lights is our preferred partner for all our residential and commercial projects.",
-    rating: 5,
-  },
-];
+const TESTIMONIALS: any[] = [];
 
 import { ITestimonial } from "@/types";
 
 export default function TestimonialsSlider({ testimonials: propTestimonials }: { testimonials?: ITestimonial[] }) {
   const testimonials = propTestimonials?.length ? propTestimonials : TESTIMONIALS as unknown as ITestimonial[];
   const [current, setCurrent] = useState(0);
+
+  if (!testimonials || testimonials.length === 0) {
+    return null;
+  }
+
   const t = testimonials[current];
 
   return (
