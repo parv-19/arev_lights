@@ -1,7 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 import SectionReveal from "@/components/shared/SectionReveal";
-import { Play, ExternalLink } from "lucide-react";
+import { Play } from "lucide-react";
+import InstagramEmbed from "@/components/public/media/InstagramEmbed";
+import {
+  getYouTubeEmbedUrl,
+  isInstagramUrl,
+  isYouTubeUrl,
+} from "@/lib/socialEmbeds";
 
 interface IGlimpse {
   _id: string;
@@ -10,15 +16,6 @@ interface IGlimpse {
   videoUrl: string;
   thumbnail?: { url: string; publicId?: string };
 }
-
-function getEmbedUrl(url: string): string {
-  const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-  if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0&rel=0&modestbranding=1`;
-  return url;
-}
-
-function isYouTube(url: string) { return /youtube\.com|youtu\.be/.test(url); }
-function isInstagram(url: string) { return /instagram\.com/.test(url); }
 
 export default function GlimpsesPage() {
   const [glimpses, setGlimpses] = useState<IGlimpse[]>([]);
@@ -67,8 +64,14 @@ export default function GlimpsesPage() {
               {glimpses.map((g, i) => (
                 <SectionReveal key={g._id} delay={i * 0.07}>
                   <div className="group bg-surface border border-border rounded-sm overflow-hidden hover:border-border-light hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300">
-                    <div className="relative aspect-video bg-surface-2 overflow-hidden">
-                      {g.thumbnail?.url ? (
+                    <div
+                      className={`relative overflow-hidden ${
+                        isInstagramUrl(g.videoUrl) ? "bg-primary p-3" : "aspect-video bg-surface-2"
+                      }`}
+                    >
+                      {isInstagramUrl(g.videoUrl) ? (
+                        <InstagramEmbed url={g.videoUrl} title={g.title} />
+                      ) : g.thumbnail?.url ? (
                         <a
                           href={g.videoUrl}
                           target="_blank"
@@ -83,26 +86,14 @@ export default function GlimpsesPage() {
                             </div>
                           </div>
                         </a>
-                      ) : isYouTube(g.videoUrl) ? (
+                      ) : isYouTubeUrl(g.videoUrl) ? (
                         <iframe
-                          src={getEmbedUrl(g.videoUrl)}
+                          src={getYouTubeEmbedUrl(g.videoUrl)}
                           title={g.title}
                           className="w-full h-full"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowFullScreen
                         />
-                      ) : isInstagram(g.videoUrl) ? (
-                        <a
-                          href={g.videoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex flex-col items-center justify-center h-full gap-3 bg-gradient-to-br from-[#833ab4]/20 via-[#fd1d1d]/20 to-[#fcb045]/20 hover:from-[#833ab4]/30 hover:to-[#fcb045]/30 transition-all group"
-                        >
-                          <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#833ab4] via-[#fd1d1d] to-[#fcb045] flex items-center justify-center group-hover:scale-105 transition-transform">
-                            <Play size={22} className="text-white ml-1" />
-                          </div>
-                          <span className="text-muted text-xs flex items-center gap-1">Watch Instagram Reel <ExternalLink size={10} /></span>
-                        </a>
                       ) : (
                         <video src={g.videoUrl} controls className="w-full h-full object-cover" />
                       )}
