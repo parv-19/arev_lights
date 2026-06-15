@@ -11,7 +11,7 @@ export default function Loading() {
         {/* Inner static logo */}
         <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center bg-transparent">
           <Image
-            src="/logo_white.png"
+            src="/logo_.png"
             alt="Loading..."
             width={64}
             height={64}
