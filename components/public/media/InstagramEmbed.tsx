@@ -52,9 +52,9 @@ export default function InstagramEmbed({
   }, [permalink]);
 
   return (
-    <div className="w-full overflow-hidden rounded-sm border border-border bg-primary/60 p-2">
+    <div className="mx-auto w-full max-w-[320px] overflow-hidden rounded-2xl border border-border/80 bg-primary/70 p-3 shadow-[0_16px_40px_rgba(0,0,0,0.28)]">
       <blockquote
-        className="instagram-media mx-auto w-full !min-w-0 !max-w-full !bg-transparent"
+        className="instagram-media mx-auto w-full !min-w-0 !max-w-full !overflow-hidden !rounded-xl !bg-transparent"
         data-instgrm-permalink={permalink}
         data-instgrm-version="14"
         style={{
@@ -63,6 +63,8 @@ export default function InstagramEmbed({
           margin: 0,
           maxWidth: "100%",
           minWidth: 0,
+          borderRadius: "0.9rem",
+          overflow: "hidden",
           width: "100%",
         }}
       >

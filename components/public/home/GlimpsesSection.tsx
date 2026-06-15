@@ -42,14 +42,14 @@ export default function GlimpsesSection({ glimpses: propGlimpses }: { glimpses?:
           </p>
         </SectionReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {glimpses.map((g, i) => (
             <SectionReveal key={g._id} delay={i * 0.08}>
-              <div className="group bg-surface border border-border rounded-sm overflow-hidden hover:border-border-light hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300">
+              <div className="group mx-auto w-full max-w-[21rem] overflow-hidden rounded-2xl border border-border/80 bg-surface/95 hover:border-accent/30 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(0,0,0,0.32)] transition-all duration-300">
                 {/* Video */}
                 <div
                   className={`relative overflow-hidden ${
-                    isInstagramUrl(g.videoUrl) ? "bg-primary p-3" : "aspect-video bg-surface-2"
+                    isInstagramUrl(g.videoUrl) ? "bg-primary/70 px-3 pt-3 pb-2" : "aspect-video bg-surface-2"
                   }`}
                 >
                   {isInstagramUrl(g.videoUrl) ? (
@@ -83,9 +83,9 @@ export default function GlimpsesSection({ glimpses: propGlimpses }: { glimpses?:
                 </div>
 
                 {/* Info */}
-                <div className="p-4">
-                  <h3 className="font-display text-sm text-neutral leading-snug mb-1">{g.title}</h3>
-                  {g.description && <p className="text-muted text-xs leading-relaxed">{g.description}</p>}
+                <div className="p-4 sm:p-5">
+                  <h3 className="font-display text-[15px] text-neutral leading-snug mb-2">{g.title}</h3>
+                  {g.description && <p className="text-muted text-[11px] leading-relaxed line-clamp-4">{g.description}</p>}
                 </div>
               </div>
             </SectionReveal>
