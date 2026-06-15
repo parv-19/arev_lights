@@ -55,11 +55,11 @@ export default function Footer({ settings }: { settings?: ISiteSettings | null }
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Brand Column */}
           <div className="col-span-2 lg:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-3 mb-5 group">
-              <Image src="/logo_transparent.jpeg" alt="AREV Logo" width={36} height={36} className="w-9 h-9 rounded-full object-cover" />
-              <div className="flex flex-col leading-none">
-                <span className="font-display text-2xl sm:text-3xl font-semibold text-neutral">AREV</span>
-                <span className="font-label text-[10px] uppercase tracking-[0.4em] text-accent font-medium mt-0.5">Lights</span>
+            <Link href="/" className="inline-flex items-center gap-2.5 mb-5 group">
+              <Image src="/logo_white.png" alt="AREV Logo" width={32} height={32} className="w-8 h-8 object-contain flex-shrink-0" />
+              <div className="flex flex-col items-start leading-none">
+                <span className="font-display text-[1.9rem] sm:text-[2.2rem] font-semibold text-neutral">AREV</span>
+                <span className="pl-[2px] font-label text-[9px] uppercase tracking-[0.34em] text-accent font-medium mt-1">Lights</span>
               </div>
             </Link>
             <p className="text-muted text-sm leading-relaxed mb-5 max-w-xs">

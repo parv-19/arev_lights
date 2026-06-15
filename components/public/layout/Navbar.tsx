@@ -72,13 +72,13 @@ export default function Navbar({ settings }: { settings?: ISiteSettings | null }
         <div className="container-custom">
           <div className="flex items-center justify-between h-18">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <Image src="/logo_transparent.jpeg" alt="AREV Logo" width={32} height={32} className="w-8 h-8 rounded-full object-cover" />
-              <div className="flex flex-col leading-none">
-                <span className="font-display text-2xl font-semibold text-neutral tracking-tight group-hover:text-accent transition-colors duration-300">
+            <Link href="/" className="flex items-center gap-2 group">
+              <Image src="/logo_white.png" alt="AREV Logo" width={28} height={28} className="w-7 h-7 object-contain flex-shrink-0" />
+              <div className="flex flex-col items-start leading-none">
+                <span className="font-display text-[1.85rem] font-semibold text-neutral tracking-tight group-hover:text-accent transition-colors duration-300">
                   AREV
                 </span>
-                <span className="font-label text-[10px] uppercase tracking-[0.4em] text-accent font-medium mt-0.5">
+                <span className="pl-[2px] font-label text-[9px] uppercase tracking-[0.34em] text-accent font-medium mt-1">
                   Lights
                 </span>
               </div>

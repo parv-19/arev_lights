@@ -22,14 +22,14 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: siteUrl,
     siteName: "AREV Lights",
-    images: ["/logo_transparent.jpeg"],
+    images: ["/logo_white.png"],
   },
   alternates: {
     canonical: siteUrl,
   },
   icons: {
-    icon: "/logo_transparent.jpeg",
-    apple: "/logo_transparent.jpeg",
+    icon: "/logo_white.png",
+    apple: "/logo_white.png",
   },
 };
 

@@ -11,11 +11,11 @@ export default function Loading() {
         {/* Inner static logo */}
         <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center bg-transparent">
           <Image
-            src="/logo_transparent.jpeg"
+            src="/logo_white.png"
             alt="Loading..."
             width={64}
             height={64}
-            className="w-full h-full object-cover rounded-full animate-pulse object-center"
+            className="w-full h-full object-contain animate-pulse object-center"
           />
         </div>
       </div>
