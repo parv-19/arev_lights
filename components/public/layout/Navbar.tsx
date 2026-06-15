@@ -73,7 +73,7 @@ export default function Navbar({ settings }: { settings?: ISiteSettings | null }
           <div className="flex items-center justify-between h-18">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5 group">
-              <Image src="/logo.png" alt="AREV Logo" width={32} height={32} className="w-8 h-8 rounded-full object-cover" />
+              <Image src="/logo_transparent.jpeg" alt="AREV Logo" width={32} height={32} className="w-8 h-8 rounded-full object-cover" />
               <div className="flex flex-col leading-none">
                 <span className="font-display text-2xl font-semibold text-neutral tracking-tight group-hover:text-accent transition-colors duration-300">
                   AREV

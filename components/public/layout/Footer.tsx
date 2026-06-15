@@ -56,7 +56,7 @@ export default function Footer({ settings }: { settings?: ISiteSettings | null }
           {/* Brand Column */}
           <div className="col-span-2 lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-3 mb-5 group">
-              <Image src="/logo.png" alt="AREV Logo" width={36} height={36} className="w-9 h-9 rounded-full object-cover" />
+              <Image src="/logo_transparent.jpeg" alt="AREV Logo" width={36} height={36} className="w-9 h-9 rounded-full object-cover" />
               <div className="flex flex-col leading-none">
                 <span className="font-display text-2xl sm:text-3xl font-semibold text-neutral">AREV</span>
                 <span className="font-label text-[10px] uppercase tracking-[0.4em] text-accent font-medium mt-0.5">Lights</span>
