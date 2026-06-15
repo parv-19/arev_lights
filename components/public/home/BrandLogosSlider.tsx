@@ -11,13 +11,23 @@ const BRANDS = [
   { name: "Anchor", logo: "https://images.unsplash.com/photo-1614680376739-414d95ff43df?w=200&q=80" },
 ];
 
-import { IBrand } from "@/types";
+interface BrandLogoItem {
+  _id?: string;
+  name: string;
+  logo?: {
+    url?: string;
+    publicId?: string;
+  };
+  websiteUrl?: string;
+  sortOrder?: number;
+  isActive?: boolean;
+}
 
 // Duplicate for seamless loop
-const getDoubled = (items: any[]) => [...items, ...items];
+const getDoubled = (items: BrandLogoItem[]) => [...items, ...items];
 
-export default function BrandLogosSlider({ brands: propBrands }: { brands?: IBrand[] }) {
-  const brandsSrc = propBrands?.length ? propBrands : BRANDS as unknown as IBrand[];
+export default function BrandLogosSlider({ brands: propBrands }: { brands?: BrandLogoItem[] }) {
+  const brandsSrc = propBrands?.length ? propBrands : (BRANDS as unknown as BrandLogoItem[]);
   const BRANDS_DOUBLED = getDoubled(brandsSrc);
   return (
     <section className="py-14 bg-surface border-y border-border overflow-hidden">

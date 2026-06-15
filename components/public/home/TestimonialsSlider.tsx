@@ -5,12 +5,19 @@ import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import Image from "next/image";
 import SectionReveal from "@/components/shared/SectionReveal";
 
-const TESTIMONIALS: any[] = [];
+interface TestimonialItem {
+  _id: string;
+  clientName: string;
+  designation?: string;
+  company?: string;
+  reviewText: string;
+  rating: number;
+}
 
-import { ITestimonial } from "@/types";
+const TESTIMONIALS: TestimonialItem[] = [];
 
-export default function TestimonialsSlider({ testimonials: propTestimonials }: { testimonials?: ITestimonial[] }) {
-  const testimonials = propTestimonials?.length ? propTestimonials : TESTIMONIALS as unknown as ITestimonial[];
+export default function TestimonialsSlider({ testimonials: propTestimonials }: { testimonials?: TestimonialItem[] }) {
+  const testimonials = propTestimonials?.length ? propTestimonials : TESTIMONIALS;
   const [current, setCurrent] = useState(0);
 
   if (!testimonials || testimonials.length === 0) {

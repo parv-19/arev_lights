@@ -5,7 +5,16 @@ import SectionReveal from "@/components/shared/SectionReveal";
 import LeadCaptureModal from "@/components/shared/LeadCaptureModal";
 import { FileText } from "lucide-react";
 import Link from "next/link";
-import { IBrochure } from "@/types";
+
+interface BrochureItem {
+  _id: string;
+  title: string;
+  previewImage?: {
+    url?: string;
+    publicId?: string;
+  };
+  previewUrl?: string;
+}
 
 // Real AREV Lights brochure categories from their product portfolio
 const DUMMY_BROCHURES = [
@@ -29,8 +38,8 @@ const DUMMY_BROCHURES = [
   },
 ];
 
-export default function BrochuresSection({ brochures: propBrochures }: { brochures?: IBrochure[] }) {
-  const brochures = propBrochures?.length ? propBrochures : DUMMY_BROCHURES as unknown as IBrochure[];
+export default function BrochuresSection({ brochures: propBrochures }: { brochures?: BrochureItem[] }) {
+  const brochures = propBrochures?.length ? propBrochures : (DUMMY_BROCHURES as unknown as BrochureItem[]);
   const [activeModal, setActiveModal] = useState<string | null>(null);
 
   return (
@@ -57,7 +66,7 @@ export default function BrochuresSection({ brochures: propBrochures }: { brochur
                 {/* Preview Thumbnail */}
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
-                    src={(b as any).previewUrl || b.previewImage?.url || "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=400&q=80"}
+                    src={b.previewUrl || b.previewImage?.url || "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=400&q=80"}
                     alt={b.title}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
